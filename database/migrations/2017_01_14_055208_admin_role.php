@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBlogcontentTable extends Migration
+class AdminRole extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,10 @@ class CreateBlogcontentTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogcontent', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::create('admin_role', function (Blueprint $table) {
+           $this->generateTable($table);
+            $table->string('name');
+            $table->integer('role_type');
         });
     }
 
@@ -25,6 +26,6 @@ class CreateBlogcontentTable extends Migration
      */
     public function down()
     {
-        Schema::drop('blogcontent');
+        Schema::drop('admin_role');
     }
 }

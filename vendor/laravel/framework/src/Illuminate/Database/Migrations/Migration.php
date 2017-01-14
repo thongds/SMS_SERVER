@@ -1,6 +1,7 @@
 <?php
 
 namespace Illuminate\Database\Migrations;
+use Illuminate\Database\Schema\Blueprint;
 
 abstract class Migration
 {
@@ -19,5 +20,12 @@ abstract class Migration
     public function getConnection()
     {
         return $this->connection;
+    }
+    public function generateTable(Blueprint $table){
+        $table->engine = 'InnoDB';
+        $table->increments('id');
+        $table->dateTime('created');
+        $table->dateTime('modified');
+        $table->boolean('active')->default(1);
     }
 }
