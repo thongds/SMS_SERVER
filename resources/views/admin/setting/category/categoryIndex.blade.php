@@ -107,7 +107,7 @@
                             @if($update_data!=null & $update_data['active'] != 1)
                                     <input type="checkbox" name="isActive" > Active
                             @else
-                                <input type="checkbox" name="isActive" checked > Active
+                                <input type="checkbox" name="active" checked > Active
                             @endif
                             @if($isEdit)
                                 <input type="hidden" name = "id" value="<?php echo $update_data['id']?>">
