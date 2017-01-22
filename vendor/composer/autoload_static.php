@@ -270,6 +270,7 @@ class ComposerStaticInita58cdf2816d1853ea58abe1f2dac03d7
     );
 
     public static $classMap = array (
+        'AddTokenToUserTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_20_023549_add_token_to_user_table.php',
         'AdminRole' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_055208_admin_role.php',
         'AdminUser' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_056625_admin_user.php',
         'BuySongHistory' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_053839_buy_song_history.php',

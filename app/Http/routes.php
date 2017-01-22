@@ -36,6 +36,12 @@ Route::group(['namespace' => 'Auth'],function (){
 Route::group(['namespace' => 'Admin'],function (){
 
     /* admin route */
+        //setting role
+        Route::get('admin/createRole','SettingController@createRole')->name('get_createRole');
+        Route::post('admin/createRole','SettingController@createRole')->name('createRole');
+        //setting role
+        Route::get('admin/category','CategoryController@index')->name('get_category');
+        Route::post('admin/category','CategoryController@index')->name('post_category');
 
         Route::get('admin','AdminController@index');
         Route::post('admin/login','AdminController@login')->name('admin');

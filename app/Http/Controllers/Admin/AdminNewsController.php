@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class AdminNewsController extends Controller{
 
     public  function  __construct(){
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     public function index(Request $request){

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddTokenToUserTable' => $baseDir . '/database/migrations/2017_01_20_023549_add_token_to_user_table.php',
     'AdminRole' => $baseDir . '/database/migrations/2017_01_14_055208_admin_role.php',
     'AdminUser' => $baseDir . '/database/migrations/2017_01_14_056625_admin_user.php',
     'BuySongHistory' => $baseDir . '/database/migrations/2017_01_14_053839_buy_song_history.php',

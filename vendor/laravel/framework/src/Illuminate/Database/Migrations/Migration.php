@@ -24,8 +24,8 @@ abstract class Migration
     public function generateTable(Blueprint $table){
         $table->engine = 'InnoDB';
         $table->increments('id');
-        $table->dateTime('created');
-        $table->dateTime('modified');
+        $table->dateTime('created_at');
+        $table->dateTime('updated_at');
         $table->boolean('active')->default(1);
     }
 }

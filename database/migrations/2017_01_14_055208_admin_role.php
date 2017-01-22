@@ -15,7 +15,7 @@ class AdminRole extends Migration
         Schema::create('admin_role', function (Blueprint $table) {
            $this->generateTable($table);
             $table->string('name');
-            $table->integer('role_type');
+            $table->integer('role_type')->unique();
         });
     }
 

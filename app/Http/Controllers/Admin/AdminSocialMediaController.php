@@ -15,7 +15,7 @@ class AdminSocialMediaController extends Controller{
     private $pase_view_path = "admin.social_media.";
 
     public function __construct(){
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     public function index(Request $request){
