@@ -16,11 +16,13 @@ use Validator;
 
 class CDUFileController extends CDUController{
 
-    protected $mPathField;
+    protected $mFieldFile;
+    protected $mFieldPath;
     protected $mValidateFormUpdate;
-    public function __construct(array $pathField,Model $model, $privateKey, array $uniqueField, array $router, array $validateForm, array $validateFormUpdate)
+    public function __construct(array $fieldFile,array $fieldPath,Model $model, $privateKey, array $uniqueField, array $router, array $validateForm, array $validateFormUpdate)
     {
-        $this->mPathField = $pathField;
+        $this->mFieldFile = $fieldFile;
+        $this->mFieldPath = $fieldPath;
         $this->mValidateFormUpdate = $validateFormUpdate;
         parent::__construct($model, $privateKey, $uniqueField, $router, $validateForm);
     }
@@ -59,9 +61,11 @@ class CDUFileController extends CDUController{
         if($request->get($this->mPrivateKey) !=null){
             $this->checkValidateByForm($request,$this->mValidateFormUpdate);
             $fieldOfDelete = array();
-            foreach ($this->mPathField as $value){
-                if($request->get($value)!=null){
-                    $fieldOfDelete = array_merge($fieldOfDelete,$value);
+            foreach ($this->mFieldFile as $value){
+
+                if($request->file($value)!=null){
+
+                    $fieldOfDelete = array_merge($fieldOfDelete,[$value.'_path']);
                 }
             }
             if(!empty($fieldOfDelete)){
@@ -81,7 +85,7 @@ class CDUFileController extends CDUController{
     }
     public function processGet(Request $request,$callback){
         if($request->get(ActionKey::delete)){
-            $this->deleteOldFile($request,$this->mPathField);
+            $this->deleteOldFile($request,$this->mFieldPath);
             $result =(boolean)$this->delete($request->get($this->mPrivateKey));
             $callback($result);
             return;

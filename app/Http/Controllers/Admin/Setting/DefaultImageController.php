@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 class DefaultImageController extends CDUFileController{
     private $routers = array('GET' => 'get_default_image','POST' => 'post_default_image');
     private $uniqueFields = array('name');
+    private $fieldFile = array('avatar','logo','content');
     private $fieldPath = array('avatar_path','logo_path','content_path');
     private $privateKey = 'id';
     private $validateForm = ['name'=>'required|max:255','avatar' => 'required','logo' => 'required','content' => 'required'];
@@ -22,7 +23,7 @@ class DefaultImageController extends CDUFileController{
     private $pagingNumber = 3;
     public function __construct(){
 
-        parent::__construct($this->fieldPath,new DefaultImage(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm,$this->validateFormUpdate);
+        parent::__construct($this->fieldFile,$this->fieldPath,new DefaultImage(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm,$this->validateFormUpdate);
     }
 
     public function index(Request $request){
