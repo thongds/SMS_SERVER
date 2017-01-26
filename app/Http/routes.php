@@ -54,6 +54,9 @@ Route::group(['namespace' => 'Admin\Setting'],function (){
     //setting singer
     Route::get('admin/singer','SingerController@index')->name('get_singer');
     Route::post('admin/singer','SingerController@index')->name('post_singer');
+    //setting default image
+    Route::get('admin/default-image','DefaultImageController@index')->name('get_default_image');
+    Route::post('admin/default-image','DefaultImageController@index')->name('post_default_image');
 
 });
 /* news controller group */

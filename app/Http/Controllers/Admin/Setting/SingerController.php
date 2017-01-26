@@ -7,11 +7,11 @@
  */
 
 namespace App\Http\Controllers\Admin\Setting;
-use App\Http\Controllers\BaseAdminController\CDUController;
+use App\Http\Controllers\BaseAdminController\CDUFileController;
 use App\Models\Singer;
 use Illuminate\Http\Request;
 
-class SingerController extends  CDUController{
+class SingerController extends CDUFileController{
 
     private $routers = array('GET' => 'get_singer','POST' => 'post_singer');
     private $uniqueFields = array('name');
@@ -19,6 +19,7 @@ class SingerController extends  CDUController{
     private $validateForm = ['name'=>'required|max:255'];
     private $pagingNumber = 3;
     public function __construct(){
+
         parent::__construct(new Singer(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm);
     }
 
@@ -29,7 +30,8 @@ class SingerController extends  CDUController{
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $avatar = $request->file('avatar');
             $avatar_path = $this->_getFilepath($avatar);
-            $progressData = ['active' => $active,'name' => $request->get('name'),'avatar' => $avatar_path];
+            $progressData = ['active' => $active,'name' => $request->get('name'),'avatar' => $avatar_path['link'],
+                'avatar_path' =>$avatar_path['path']];
             $this->processPost($request,$progressData,function ($status,$message){
                 if($message!=null){
                     foreach ($message as $value){
