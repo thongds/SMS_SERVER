@@ -62,9 +62,7 @@ class CDUFileController extends CDUController{
             $this->checkValidateByForm($request,$this->mValidateFormUpdate);
             $fieldOfDelete = array();
             foreach ($this->mFieldFile as $value){
-
                 if($request->file($value)!=null){
-
                     $fieldOfDelete = array_merge($fieldOfDelete,[$value.'_path']);
                 }
             }
