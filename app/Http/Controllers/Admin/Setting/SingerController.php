@@ -15,12 +15,15 @@ class SingerController extends CDUFileController{
 
     private $routers = array('GET' => 'get_singer','POST' => 'post_singer');
     private $uniqueFields = array('name');
+    private $fieldFile = array('avatar');
+    private $fieldPath = array('avatar_path');
     private $privateKey = 'id';
-    private $validateForm = ['name'=>'required|max:255'];
+    private $validateForm = ['name'=>'required|max:255','avatar' => 'required'];
+    private $validateFormUpdate = ['name'=>'required|max:255'];
     private $pagingNumber = 3;
     public function __construct(){
 
-        parent::__construct(new Singer(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm);
+        parent::__construct($this->fieldFile,$this->fieldPath,new Singer(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm,$this->validateFormUpdate);
     }
 
     public function index(Request $request){
@@ -28,10 +31,9 @@ class SingerController extends CDUFileController{
         if ($request->isMethod('POST')){
 
             $active = !empty($request->get('active')) ? 1 : 0 ;
-            $avatar = $request->file('avatar');
-            $avatar_path = $this->_getFilepath($avatar);
-            $progressData = ['active' => $active,'name' => $request->get('name'),'avatar' => $avatar_path['link'],
-                'avatar_path' =>$avatar_path['path']];
+            $progressData = ['active' => $active,'name' => $request->get('name')];
+            $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
+
             $this->processPost($request,$progressData,function ($status,$message){
                 if($message!=null){
                     foreach ($message as $value){
@@ -50,4 +52,5 @@ class SingerController extends CDUFileController{
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         return view('admin/setting/singer.singerIndex',['listData'=>$listData,'router' => $this->routers,'page'=>$page,'isEdit'=>$request->get('isEdit'),'update_data' =>$this->mUpdateData]);
     }
+
 }
