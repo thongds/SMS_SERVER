@@ -115,4 +115,13 @@ class CDUFileController extends CDUController{
     public function checkValidateByForm(Request $request,Array $validateForm){
         $this->validate($request,$validateForm);
     }
+    public function progressFileData(Request $request,Array $fieldFile,Array $progressFileData){
+        foreach ($fieldFile as $item){
+            $fileUpload = $this->_getFilepath($request->file($item));
+            if($fileUpload !=null)
+                $progressFileData = array_merge($progressFileData,[$item => $fileUpload['link'],
+                    $item.'_path' => $fileUpload['path']]);
+        }
+        return $progressFileData;
+    }
 }

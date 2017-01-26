@@ -31,19 +31,9 @@ class DefaultImageController extends CDUFileController{
         if ($request->isMethod('POST')){
 
             $active = !empty($request->get('active')) ? 1 : 0 ;
-            $avatar_path = $this->_getFilepath($request->file('avatar'));
-            $logo_path = $this->_getFilepath($request->file('logo'));
-            $content_path = $this->_getFilepath($request->file('content'));
             $progressData = ['active' => $active,'name' => $request->get('name')];
-            if($avatar_path!=null)
-                $progressData = array_merge($progressData,['avatar' => $avatar_path['link'],
-                    'avatar_path' =>$avatar_path['path']]);
-            if($logo_path!=null)
-                $progressData = array_merge($progressData,['logo' => $logo_path['link'],
-                    'logo_path' =>$logo_path['path']]);
-            if($content_path!=null)
-                $progressData =  array_merge($progressData,['content' => $content_path['link'],
-                    'content_path' =>$content_path['path']]);
+            $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
+
             $this->processPost($request,$progressData,function ($status,$message){
                 if($message!=null){
                     foreach ($message as $value){
@@ -62,4 +52,5 @@ class DefaultImageController extends CDUFileController{
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         return view('admin/setting/defaultImage.defaultImageIndex',['listData'=>$listData,'router' => $this->routers,'page'=>$page,'isEdit'=>$request->get('isEdit'),'update_data' =>$this->mUpdateData]);
     }
+
 }
