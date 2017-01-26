@@ -70,7 +70,7 @@ class SparkPostTransport extends Transport
             $options['json']['options'] = $this->options;
         }
 
-        return $this->client->post('https://Api.sparkpost.com/Api/v1/transmissions', $options);
+        return $this->client->post('https://api.sparkpost.com/api/v1/transmissions', $options);
     }
 
     /**

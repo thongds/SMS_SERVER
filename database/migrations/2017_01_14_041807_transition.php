@@ -13,7 +13,7 @@ class Transition extends Migration
     public function up()
     {
         Schema::create('transition', function (Blueprint $table) {
-           $this->generateTable($table);
+            $this->generateTable($table);
             $table->unsignedInteger('amount_money');
             $table->text('sign_data');
             $table->unsignedInteger('transition_id');
@@ -30,6 +30,6 @@ class Transition extends Migration
      */
     public function down()
     {
-        Schema::drop('transition');
+        Schema::dropIfExists('transition');
     }
 }

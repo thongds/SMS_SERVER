@@ -13,7 +13,7 @@ class AdminRole extends Migration
     public function up()
     {
         Schema::create('admin_role', function (Blueprint $table) {
-           $this->generateTable($table);
+            $this->generateTable($table);
             $table->string('name');
             $table->integer('role_type')->unique();
         });
@@ -26,6 +26,6 @@ class AdminRole extends Migration
      */
     public function down()
     {
-        Schema::drop('admin_role');
+        Schema::dropIfExists('admin_role');
     }
 }

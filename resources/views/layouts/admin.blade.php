@@ -329,8 +329,13 @@
             </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                        <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                        <li><a href="{{URL("admin/category")}}"><i class="fa fa-circle-o"></i> Category</a></li>
+                        <li class="active"><a href="{{URL("admin/language")}}"><i class="fa fa-circle-o"></i> Language</a></li>
+                        <li><a href="{{URL("admin/role")}}"><i class="fa fa-circle-o"></i> Admin Role</a></li>
+                        <li><a href="{{URL("admin/provider-payment")}}"><i class="fa fa-circle-o"></i> provider-payment</a></li>
+                        <li><a href="{{URL("admin/subscribe-type")}}"><i class="fa fa-circle-o"></i> subscribe-type</a></li>
+                        <li><a href="{{URL("admin/singer")}}"><i class="fa fa-circle-o"></i> Singer</a></li>
+
                     </ul>
                 </li>
                 <li class="treeview">

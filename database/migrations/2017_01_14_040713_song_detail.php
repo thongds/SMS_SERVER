@@ -37,6 +37,6 @@ class SongDetail extends Migration
      */
     public function down()
     {
-        Schema::drop('song_detail');
+        Schema::dropIfExists('song_detail');
     }
 }

@@ -13,8 +13,8 @@ class Category extends Migration
     public function up()
     {
         Schema::create('category', function (Blueprint $table) {
-           $this->generateTable($table);
-           $table->string('name');
+            $this->generateTable($table);
+            $table->string('name');
 
         });
     }
@@ -26,6 +26,6 @@ class Category extends Migration
      */
     public function down()
     {
-        Schema::drop('category');
+        Schema::dropIfExists('category');
     }
 }

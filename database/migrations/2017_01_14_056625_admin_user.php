@@ -12,8 +12,9 @@ class AdminUser extends Migration
      */
     public function up()
     {
+
         Schema::create('admin_user', function (Blueprint $table) {
-           $this->generateTable($table);
+            $this->generateTable($table);
             $table->string('user_name');
             $table->string('password');
             $table->unsignedInteger('admin_role_id');
@@ -29,6 +30,6 @@ class AdminUser extends Migration
      */
     public function down()
     {
-        Schema::drop('admin_user');
+        Schema::dropIfExists('admin_user');
     }
 }

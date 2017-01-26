@@ -64,9 +64,10 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+                {{$category_list->links()}}
             </div>
         </div>
-        {{$category_list->links()}}
+
 
         <div class="col-md-12">
             <!-- general form elements -->
@@ -120,9 +121,10 @@
                 <div class="box-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     @if($isEdit)
-                        &nbsp;&nbsp;&nbsp;&nbsp<a href="{{url('/admin/category')}}" class="btn btn-warning" >Cancel</a>
+                        &nbsp;&nbsp;&nbsp<a href="<?php echo url()->current() ?>" class="btn btn-warning" >Cancel</a>
                     @endif
                 </div>
+                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <?php echo Form::close() ?>
             </div>
             <!-- /.box -->

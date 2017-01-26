@@ -31,6 +31,6 @@ class BuySongHistory extends Migration
      */
     public function down()
     {
-        Schema::drop('buy_song_history');
+        Schema::dropIfExists('buy_song_history');
     }
 }

@@ -16,7 +16,7 @@ class SubscribeType extends Migration
             $this->generateTable($table);
             $table->string('name');
             $table->string('description');
-            $table->timestamp('total_time');
+            $table->bigInteger('total_time');
         });
     }
 
@@ -27,6 +27,6 @@ class SubscribeType extends Migration
      */
     public function down()
     {
-        Schema::drop('subscribe_type');
+        Schema::dropIfExists('subscribe_type');
     }
 }

@@ -26,6 +26,6 @@ class Singer extends Migration
      */
     public function down()
     {
-        Schema::drop('singer');
+        Schema::dropIfExists('singer');
     }
 }

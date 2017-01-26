@@ -13,7 +13,7 @@ class ProviderPayment extends Migration
     public function up()
     {
         Schema::create('provider_payment', function (Blueprint $table) {
-           $this->generateTable($table);
+            $this->generateTable($table);
             $table->string('name');
         });
     }
@@ -25,6 +25,6 @@ class ProviderPayment extends Migration
      */
     public function down()
     {
-        Schema::drop('provider_payment');
+        Schema::dropIfExists('provider_payment');
     }
 }

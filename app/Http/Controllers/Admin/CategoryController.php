@@ -7,7 +7,7 @@
  */
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\CDUController;
+use App\Http\Controllers\BaseAdminController\CDUController;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Validator;
@@ -29,13 +29,20 @@ class CategoryController extends CDUController {
         if ($request->isMethod('POST')){
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name')];
-            $this->processPost($request,$progressData);
+            $this->processPost($request,$progressData,function ($data){
+                return redirect()->route('get_category')->withErrors($data);
+            });
         }
         if ($request->isMethod('GET')){
-            $this->processGet($request);
+            $this->processGet($request,function ($data){
+
+            });
         }
 
         $categoryList = $categoryModel->orderBy('created_at')->paginate($this->pagingNumber);
         return view('admin/setting/category.categoryIndex',['category_list'=>$categoryList,'page'=>$page,'isEdit'=>$request->get('isEdit'),'update_data' =>$this->mUpdateData]);
+    }
+    public function callback($data){
+        echo $data;exit;
     }
 }

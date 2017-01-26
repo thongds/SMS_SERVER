@@ -12,16 +12,12 @@ class SongSubtitle extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('song_subtitle')){
-            $this->down();
-        }else{
-            Schema::create('song_subtitle', function (Blueprint $table) {
-                $this->generateTable($table);
-                $table->string('source');
-                $table->unsignedInteger('subtitle_type_id');
-                $table->foreign('subtitle_type_id')->references('id')->on('subtitle_type');
-            });
-        }
+        Schema::create('song_subtitle', function (Blueprint $table) {
+            $this->generateTable($table);
+            $table->string('source');
+            $table->unsignedInteger('subtitle_type_id');
+            $table->foreign('subtitle_type_id')->references('id')->on('subtitle_type');
+        });
     }
 
     /**
@@ -31,6 +27,6 @@ class SongSubtitle extends Migration
      */
     public function down()
     {
-        Schema::drop('song_subtitle');
+        Schema::dropIfExists('song_subtitle');
     }
 }

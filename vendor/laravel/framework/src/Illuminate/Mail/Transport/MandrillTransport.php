@@ -54,7 +54,7 @@ class MandrillTransport extends Transport
             $options = ['body' => $data];
         }
 
-        return $this->client->post('https://mandrillapp.com/Api/1.0/messages/send-raw.json', $options);
+        return $this->client->post('https://mandrillapp.com/api/1.0/messages/send-raw.json', $options);
     }
 
     /**

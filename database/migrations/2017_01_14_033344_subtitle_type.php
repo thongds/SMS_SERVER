@@ -12,14 +12,10 @@ class SubtitleType extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('subtitle_type')){
-            $this->down();
-        }else {
-            Schema::create('subtitle_type', function (Blueprint $table) {
-                $this->generateTable($table);
-                $table->string('name');
-            });
-        }
+        Schema::create('subtitle_type', function (Blueprint $table) {
+            $this->generateTable($table);
+            $table->string('name');
+        });
     }
 
     /**
@@ -29,6 +25,6 @@ class SubtitleType extends Migration
      */
     public function down()
     {
-        Schema::drop('subtitle_type');
+        Schema::dropIfExists('subtitle_type');
     }
 }

@@ -13,8 +13,8 @@ class SubscribeHistory extends Migration
     public function up()
     {
         Schema::create('subscribe_history', function (Blueprint $table) {
-           $this->generateTable($table);
-           $table->unsignedInteger('user_id');
+            $this->generateTable($table);
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('subscribe_type_id');
             $table->unsignedInteger('transition_id');
 
@@ -31,6 +31,6 @@ class SubscribeHistory extends Migration
      */
     public function down()
     {
-        Schema::drop('subscribe_history');
+        Schema::dropIfExists('subscribe_history');
     }
 }
