@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('title','Singer Index')
+@section('title','Song Data Index')
 @section('content')
     <div class="row">
         <!-- left column -->
@@ -97,14 +97,38 @@
                 <div class="box-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Singer Name</label>
-                        <input type="input" name ="name" value = "<?php echo $update_data!=null?$update_data["name"]:""; ?>" class="form-control" id="exampleInputEmail1" >
-                        </div>
+                        <label for="exampleInputEmail1">Song Name</label>
+                        <input type="input" name ="name" value = "<?php echo $update_data!=null?$update_data["name"]:""; ?>" class="form-control" id="exampleInputEmail1" placeholder="song name" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Duration</label>
+                        <input type="input" name ="duration" value = "<?php echo $update_data!=null?$update_data["duration"]:""; ?>" class="form-control" placeholder="duration" id="exampleInputEmail1" >
+                    </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Avatar</label>
                         <input type="file" name ="avatar" class="form-control" id="exampleInputEmail1" >
                     </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Subtitle Source</label>
+                        <input type="file" name ="subtitle_source" class="form-control" id="exampleInputEmail1" >
+                    </div>
+                    @if(isset($foreignData) && $foreignData != null)
+                        @foreach($foreignData as $item)
+                            <label > <?php echo $item['label'] ?></label>
+                            <select class="form-control" name="newspaper_id">
+                                <?php
+                                $id = $item['oldId'];
+                                foreach ($item['data'] as $data){
+                                    if($id == $data->id)
+                                        echo ' <option value="'.$data->id.'" selected ="selected">'.$data->name.'</option>';
+                                    else
+                                        echo ' <option value="'.$data->id.'">'.$data->name.'</option>';
+                                }
+                                ?>
 
+                            </select>
+                        @endforeach
+                    @endif
                     <div class="checkbox">
                         <label>
                             @if($update_data!=null & $update_data['active'] != 1)

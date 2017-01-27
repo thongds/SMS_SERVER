@@ -30,7 +30,11 @@ Route::group(['namespace' => 'Auth'],function (){
     Route::post('auth/validate','AuthController@validateRegister')->name('validate');
     Route::get('auth/logout','AuthController@logout')->name('logout');
 });
-
+/* create data group */
+Route::group(['namespace' => 'Admin\CreateData'],function (){
+    Route::get('admin/song-index','SongDetailController@index')->name('get_song_index');
+    Route::post('admin/song-index','SongDetailController@index')->name('post_song_index');
+});
 /* news controller group */
 Route::group(['namespace' => 'Admin\Setting'],function (){
     //setting SubtitleType

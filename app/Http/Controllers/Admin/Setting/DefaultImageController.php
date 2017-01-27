@@ -27,7 +27,8 @@ class DefaultImageController extends CDUFileController{
     }
 
     public function index(Request $request){
-        $page = $request->get('page');
+        $this->request = $request;
+        $this->page = $request->get('page');
         if ($request->isMethod('POST')){
 
             $active = !empty($request->get('active')) ? 1 : 0 ;
@@ -40,17 +41,26 @@ class DefaultImageController extends CDUFileController{
                         $this->mValidateMaker->errors()->add('field',$value);
                     }
                 }
-                return redirect()->route($this->routers['GET'])->withErrors($this->mValidateMaker);
+                return $this->returnView();
             });
         }
         if ($request->isMethod('GET')){
-            $this->processGet($request,function ($data){
+            $this->processGet($request,function ($status,$data){
 
             });
         }
+        return $this->returnView();
 
+    }
+    public function returnView()
+    {
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        return view('admin/setting/defaultImage.defaultImageIndex',['listData'=>$listData,'router' => $this->routers,'page'=>$page,'isEdit'=>$request->get('isEdit'),'update_data' =>$this->mUpdateData]);
+        if(count($this->mValidateMaker->errors()->toArray())>0)
+            return  view('admin/setting/defaultImage.defaultImageIndex',['listData'=>$listData,'router' => $this->routers,'page'=>$this->page,
+                'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])->withErrors($this->mValidateMaker);
+        return  view('admin/setting/defaultImage.defaultImageIndex',['listData'=>$listData,'router' => $this->routers,'page'=>$this->page,
+            'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData]);
+
     }
 
 }

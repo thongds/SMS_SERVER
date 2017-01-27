@@ -323,10 +323,10 @@
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active treeview">
                     <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        <i class="fa fa-dashboard"></i> <span>Setting</span>
                         <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+                             <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{URL("admin/category")}}"><i class="fa fa-circle-o"></i> Category</a></li>
@@ -336,6 +336,17 @@
                         <li><a href="{{URL("admin/subscribe-type")}}"><i class="fa fa-circle-o"></i> subscribe-type</a></li>
                         <li><a href="{{URL("admin/singer")}}"><i class="fa fa-circle-o"></i> Singer</a></li>
                         <li><a href="{{URL("admin/default-image")}}"><i class="fa fa-circle-o"></i> Default Image</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>Create Data</span>
+                        <span class="pull-right-container">
+                             <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{URL("admin/song-index")}}"><i class="fa fa-circle-o"></i>Song Data </a></li>
                     </ul>
                 </li>
                 <li class="treeview">

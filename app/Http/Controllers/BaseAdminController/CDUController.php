@@ -17,7 +17,7 @@ use Validator;
 
 
 
-class CDUController extends Controller {
+abstract class CDUController extends Controller {
 
     protected $mainModel ;
     protected $mRouters;
@@ -28,7 +28,11 @@ class CDUController extends Controller {
     protected $mValidateForm;
     protected $mUpdateData;
     protected $message = array();
-    protected  $isHaveUniqueError;
+    protected $isHaveUniqueError;
+    protected $viewReturn;
+    protected $page;
+    protected $request;
+    protected $listData;
     public function __construct(Model $model,$privateKey,Array $uniqueField,Array $router,Array $validateForm){$this->mainModel = $model;
        $this->mPrivateKey = $privateKey;
        $this->mRouters = $router;
@@ -36,8 +40,9 @@ class CDUController extends Controller {
        $this->mValidateForm = $validateForm;
        $this->mValidateMaker = Validator(array(),array(),array());
     }
+    abstract function returnView();
     public function processPost(Request $request,Array $processData,$callback){
-        $this->checkValidate($request);
+        var_dump($this->checkValidate($request));
         // check field unique
 
         //create new

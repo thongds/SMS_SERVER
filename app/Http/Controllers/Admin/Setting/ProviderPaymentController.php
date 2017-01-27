@@ -26,7 +26,8 @@ class ProviderPaymentController extends CDUController
     }
 
     public function index(Request $request){
-        $page = $request->get('page');
+        $this->request = $request;
+        $this->page = $request->get('page');
         if ($request->isMethod('POST')){
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name')];
@@ -36,7 +37,7 @@ class ProviderPaymentController extends CDUController
                         $this->mValidateMaker->errors()->add('field',$value);
                     }
                 }
-                return redirect()->route($this->routers['GET'])->withErrors($this->mValidateMaker);
+                return $this->returnView();
             });
         }
         if ($request->isMethod('GET')){
@@ -45,9 +46,18 @@ class ProviderPaymentController extends CDUController
             });
         }
 
+        return $this->returnView();
+    }
+    public function returnView()
+    {
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
+        if(count($this->mValidateMaker->errors()->toArray())>0)
+            return view('admin/setting/subtitletype.subtitleTypeIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
+                'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
+                ->withErrors($this->mValidateMaker);
         return view('admin/setting/subtitletype.subtitleTypeIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
-            'listData'=>$listData,'page'=>$page,'isEdit'=>$request->get('isEdit'),'update_data' =>$this->mUpdateData]);
+            'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
+            ;
     }
 
 }

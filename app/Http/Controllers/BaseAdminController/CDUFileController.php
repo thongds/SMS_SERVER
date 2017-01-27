@@ -14,7 +14,7 @@ use App\Http\Controllers\Helper\ActionKey;
 use App\Http\Controllers\Helper\MessageKey;
 use Validator;
 
-class CDUFileController extends CDUController{
+abstract class CDUFileController extends CDUController{
 
     protected $mFieldFile;
     protected $mFieldPath;
@@ -84,24 +84,25 @@ class CDUFileController extends CDUController{
     public function processGet(Request $request,$callback){
         if($request->get(ActionKey::delete)){
             $this->deleteOldFile($request,$this->mFieldPath);
-            $result =(boolean)$this->delete($request->get($this->mPrivateKey));
-            $callback($result);
+            $status =(boolean)$this->delete($request->get($this->mPrivateKey));
+            $callback($status,null);
             return;
         }
         if($request->get(ActionKey::active)!=null){
-            $result = (boolean)$this->changeStatus($request->get($this->mPrivateKey),$request ->get(ActionKey::active));
-            $callback($result);
+            $status = (boolean)$this->changeStatus($request->get($this->mPrivateKey),$request ->get(ActionKey::active));
+            $callback($status,null);
             return;
         }
         if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null){
             $result = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
             if(count($result) > 0)
                 $this->mUpdateData = $result[0];
-            $callback((boolean)$result);
+            $callback((boolean)$result,null);
             return;
         }
         //no one case match
-        $callback(null);
+        $callback(null,null);
+        return;
 
     }
     public function deleteOldFile(Request $request,Array $fieldOfPathDelete){
@@ -124,4 +125,5 @@ class CDUFileController extends CDUController{
         }
         return $progressFileData;
     }
+
 }
