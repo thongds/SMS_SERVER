@@ -81,7 +81,7 @@ abstract class CDUFileController extends CDUController{
         }
         $callback(false,null);
     }
-    public function processGet(Request $request,$callback){
+    public function processGet(Request $request,$callback,$foreignData = null){
         if($request->get(ActionKey::delete)){
             $this->deleteOldFile($request,$this->mFieldPath);
             $status =(boolean)$this->delete($request->get($this->mPrivateKey));
@@ -94,6 +94,13 @@ abstract class CDUFileController extends CDUController{
             return;
         }
         if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null){
+            $result = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
+            if(count($result) > 0)
+                $this->mUpdateData = $result[0];
+            $callback((boolean)$result,null);
+            return;
+        }
+        if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null && $foreignData !=null){
             $result = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
             if(count($result) > 0)
                 $this->mUpdateData = $result[0];

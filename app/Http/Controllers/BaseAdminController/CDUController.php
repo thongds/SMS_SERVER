@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\BaseAdminController;
 
+use App\Http\Controllers\Helper\Validate;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Helper\ActionKey;
@@ -33,16 +34,20 @@ abstract class CDUController extends Controller {
     protected $page;
     protected $request;
     protected $listData;
+    protected $responseData = null;
+    protected $mCheckValidateObject;
     public function __construct(Model $model,$privateKey,Array $uniqueField,Array $router,Array $validateForm){$this->mainModel = $model;
        $this->mPrivateKey = $privateKey;
        $this->mRouters = $router;
        $this->mUniqueFields = $uniqueField;
        $this->mValidateForm = $validateForm;
        $this->mValidateMaker = Validator(array(),array(),array());
+       $this->mCheckValidateObject = new Validate();
     }
-    abstract function returnView();
+    abstract function returnView($data);
     public function processPost(Request $request,Array $processData,$callback){
-        var_dump($this->checkValidate($request));
+
+        $this->mCheckValidateObject->checkValidate($request,$this->mValidateForm);
         // check field unique
 
         //create new
@@ -133,9 +138,7 @@ abstract class CDUController extends Controller {
         }
         return $databaseResult->save();
     }
-    public function checkValidate(Request $request){
-        $this->validate($request,$this->mValidateForm);
-    }
+
     protected function _getFilepath($file_upload){
         if($file_upload == null)
             return '';

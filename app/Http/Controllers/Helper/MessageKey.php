@@ -15,4 +15,6 @@ abstract class MessageKey{
     const wasExist = "was exist!";
     const updateSuccessful = "Update Successful!";
     const cannotUpdate = "can not update!";
+    const cannotDelete = "can not delete!";
+    const deleteSuccessful = "delete successful!";
 }

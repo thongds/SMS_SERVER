@@ -53,7 +53,7 @@ class SingerController extends CDUFileController{
         return $this->returnView();
 
     }
-    public function returnView()
+    public function returnView($data = null)
     {
         $this->listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         if(count($this->mValidateMaker->errors()->toArray())>0)

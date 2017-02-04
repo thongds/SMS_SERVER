@@ -115,7 +115,7 @@
                     @if(isset($foreignData) && $foreignData != null)
                         @foreach($foreignData as $item)
                             <label > <?php echo $item['label'] ?></label>
-                            <select class="form-control" name="newspaper_id">
+                            <select class="form-control" name="<?php echo $item['foreign_table_name'] ?>">
                                 <?php
                                 $id = $item['oldId'];
                                 foreach ($item['data'] as $data){

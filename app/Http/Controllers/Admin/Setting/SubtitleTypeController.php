@@ -46,7 +46,7 @@ class SubtitleTypeController extends  CDUController
         }
 
     }
-    public  function returnView()
+    public  function returnView($data = null)
     {
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         if(count($this->mValidateMaker->errors()->toArray())>0)

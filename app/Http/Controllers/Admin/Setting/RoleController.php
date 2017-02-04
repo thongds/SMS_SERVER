@@ -38,7 +38,7 @@ class RoleController extends CDUController{
                         $this->mValidateMaker->errors()->add('field',$value);
                     }
                 }
-                return $this->returnView();
+                return $this->returnView(null);
             });
         }
         if ($request->isMethod('GET')){
@@ -46,10 +46,10 @@ class RoleController extends CDUController{
 
             });
         }
-        return $this->returnView();
+        return $this->returnView(null);
 
     }
-    public function returnView()
+    public function returnView($data)
     {
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         if(count($this->mValidateMaker->errors()->toArray())>0)

@@ -8,11 +8,11 @@
  */
 namespace App\Http\Controllers\Admin\CreateData;
 
-use App\Http\Controllers\BaseAdminController\CDUFileController;
+use App\Http\Controllers\BaseAdminController\CDUFileWithForeignDataController;
 use App\Models\SongDetail;
 use Illuminate\Http\Request;
 
-class SongDetailController extends CDUFileController{
+class SongDetailController extends CDUFileWithForeignDataController{
     private $routers = array('GET' => 'get_song_index','POST' => 'post_song_index');
     private $uniqueFields = array('name');
     private $fieldFile = array('avatar');
@@ -21,7 +21,6 @@ class SongDetailController extends CDUFileController{
     private $validateForm = ['name'=>'required|max:255','avatar' => 'required'];
     private $validateFormUpdate = ['name'=>'required|max:255'];
     private $pagingNumber = 3;
-
     public function __construct(){
         parent::__construct($this->fieldFile,$this->fieldPath,new SongDetail(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm,$this->validateFormUpdate);
     }
@@ -29,6 +28,7 @@ class SongDetailController extends CDUFileController{
     public function index(Request $request){
         $this->request = $request ;
         $this->page = $request->get('page');
+
         if ($request->isMethod('POST')){
 
             $active = !empty($request->get('active')) ? 1 : 0 ;
@@ -41,17 +41,16 @@ class SongDetailController extends CDUFileController{
                         $this->mValidateMaker->errors()->add('field',$value);
                     }
                 }
-                return $this->returnView();
             });
         }
         if ($request->isMethod('GET')){
             $this->processGet($request,function ($data){
-
-            });
+                $this->responseData = $data;
+             });
         }
-        return $this->returnView();
+        return $this->returnView($this->responseData);
     }
-    public function returnView()
+    public function returnView($data = null)
     {
         // TODO: Implement returnView() method.
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);

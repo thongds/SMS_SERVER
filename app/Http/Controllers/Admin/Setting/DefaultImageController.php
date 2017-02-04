@@ -41,7 +41,7 @@ class DefaultImageController extends CDUFileController{
                         $this->mValidateMaker->errors()->add('field',$value);
                     }
                 }
-                return $this->returnView();
+                return $this->returnView(null);
             });
         }
         if ($request->isMethod('GET')){
@@ -49,10 +49,10 @@ class DefaultImageController extends CDUFileController{
 
             });
         }
-        return $this->returnView();
+        return $this->returnView(null);
 
     }
-    public function returnView()
+    public function returnView($data)
     {
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         if(count($this->mValidateMaker->errors()->toArray())>0)
