@@ -15,7 +15,7 @@ use App\Http\Controllers\Helper\Validate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class UpdateDataNormal{
+class UpdateDataNormal extends CreateNewNormal{
 
     protected  $mModel;
     protected $validateObject;
@@ -27,22 +27,29 @@ class UpdateDataNormal{
         $response = new GenerateCallback();
         $response->setStatus(true);
         if(!array_key_exists('id',$progressData) || (array_key_exists('id',$progressData) && empty($progressData['id']))){
-                $response->setData(false,MessageKey::cannotUpdate);
+                $response->setStatus(false);
+                $response->setMessage(MessageKey::cannotUpdate);
          }
         return $response;
     }
-    public function update(Request $request,Array $validateForm,Array $progressData){
+    public function update(Request $request,Array $uniqueForm,Array $validateForm,Array $progressData){
         $this->validateObject->checkValidate($request,$validateForm);
-        $response = $this->validateUpdateRowById($validateForm,$progressData);
-        if($response->getStatus()){
-            if($this->updateRow($progressData['id'],$progressData)){
-                $response->setData(true,MessageKey::updateSuccessful);
-            }else{
-                $response->setData(false,MessageKey::cannotUpdate);
-            }
+        $responseCheckId = $this->validateUpdateRowById($progressData);
+        if(!$responseCheckId->getStatus())
+            return $responseCheckId;
+        $uniqueResponse = $this->validateUnique($uniqueForm,$progressData);
+        if(!$uniqueResponse->getStatus())
+            return $uniqueResponse;
+        $response = new GenerateCallback();
+        if($this->updateRow($progressData['id'],$progressData)){
+                $response->setStatus(true);
+                $response->setMessage(MessageKey::updateSuccessful);
         }else{
-            return $response;
+                $response->setStatus(false);
+                $response->setMessage(MessageKey::cannotUpdate);
         }
+
+        return $response;
     }
     public function updateRow($id,$progressData){
         $databaseResult = $this->mModel->find($id);

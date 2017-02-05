@@ -14,7 +14,9 @@ use Illuminate\Http\Request;
 class Validate extends Controller{
 
     public function checkValidate(Request $request,Array $validateForm){
-        $this->validate($request,$validateForm);
+        if(!empty($validateForm))
+            $this->validate($request,$validateForm);
+        return;
     }
 
 }

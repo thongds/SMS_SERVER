@@ -62,5 +62,12 @@ class ValidateTest extends TestCase
         }
 
     }
+    public function testCheckEmpty(){
+        $object = new Validate();
+        $request = new Request();
+        $request->initialize(['test' => 'test']);
+        $return = $object->checkValidate($request,Array());
+        $this->assertNull($return);
+    }
 
 }

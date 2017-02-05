@@ -7,16 +7,18 @@
  */
 
 namespace App\Http\Controllers\Helper;
+use Validator;
 
-
-class GenerateCallback{
-    private $status = false;
-    public $responseMessage = Array();
+class GenerateCallback {
+    private $status = true;
+    private $responseMessage = Array();
     public $statusJsonKey = "status";
     public $messageJsonKey = "message";
+    private $mValidateMaker;
     public function __construct($status = false,Array $message = Array()){
         $this->status = (boolean)$status;
         $this->responseMessage = $message;
+        $this->mValidateMaker = Validator(array(),array(),array());
     }
 
     public function getStatus(){
@@ -33,10 +35,32 @@ class GenerateCallback{
         $this->status = $status;
     }
     public function setMessage($message){
-        array_push($this->responseMessage,$message);
+        if(is_string($message) || is_integer($message)){
+            array_push($this->responseMessage,$message);
+            return true;
+        }else{
+            echo __CLASS__.' wrong format at '.__FUNCTION__.' function ';
+            return false;
+        }
+
     }
-    public function setData($status,$message){
-        $this->status = $status;
-        array_push($this->responseMessage,$message);
+    public function parseMessageToValidateMaker($message = null){
+        $this->mValidateMaker = Validator(array(),array(),array());
+
+        if($message == null){
+            foreach ($this->getMessage() as $key => $value){
+                $this->mValidateMaker->errors()->add('field',$value);
+            }
+        }else{
+            if(is_array($message)){
+                foreach ($message as $key => $value){
+                    $this->mValidateMaker->errors()->add('field',$value);
+                }
+            }
+        }
+
+        return $this->mValidateMaker;
+
     }
+
 }

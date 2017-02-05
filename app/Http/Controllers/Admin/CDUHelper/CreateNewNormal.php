@@ -33,25 +33,25 @@ class CreateNewNormal{
     public function createNewRow(Request $request,Array $processData,Array $uniqueField, Array $validateForm){
         $this->mCheckValidateObject->checkValidate($request,$validateForm);
         $callbackResponse = $this->validateUnique($uniqueField,$processData);
-        if(!$callbackResponse->getMessage())
+        if(!$callbackResponse->getStatus())
             return $callbackResponse;
         return $this->addNewRow($processData);
 
     }
     public function validateUnique(Array $uniqueField,Array $processData){
-        $message = Array();
+        $response = new GenerateCallback();
         $status = true;
         foreach ($uniqueField as $field){
             if(array_key_exists($field,$processData)){
                 $result = $this->mModel->where($field,$processData[$field])->get()->toArray();
                 if (!empty($result)){
                     $status = false;
-                    array_push($message,$processData[$field].' was exist');
+                    $response->setMessage($processData[$field].' was exist');
                 }
 
             }
         }
-        $response = new GenerateCallback($status,$message);
+        $response->setStatus($status);
         return $response;
     }
     public function addNewRow(Array $progressData){
@@ -60,10 +60,14 @@ class CreateNewNormal{
         }
         $result = $this->mModel->save();
         $response = new GenerateCallback();
-        if($result)
-             $response->setData($result,[MessageKey::createSuccessful]);
-        else
-             $response->setData($result,[MessageKey::cannotSave]);
+        if($result){
+            $response->setStatus($result);
+            $response->setMessage(MessageKey::createSuccessful);
+
+        }else{
+            $response->setStatus($result);
+            $response->setMessage(MessageKey::cannotSave);
+        }
         return $response;
     }
 

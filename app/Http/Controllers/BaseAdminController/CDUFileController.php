@@ -27,6 +27,10 @@ abstract class CDUFileController extends CDUController{
         parent::__construct($model, $privateKey, $uniqueField, $router, $validateForm);
     }
 
+    public function progressPost(Request $request,Array $processData){
+
+    }
+
     public function processPost(Request $request,Array $processData,$callback){
 
         // check field unique

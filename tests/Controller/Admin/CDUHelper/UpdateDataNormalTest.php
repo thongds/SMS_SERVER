@@ -40,7 +40,7 @@ class UpdateDataNormalTest extends TestCase{
         $this->request->initialize(['name' => 'thongds']);
         $this->request->setMethod('POST');
         try{
-            $response = $this->updateObject->update($this->request,$this->validateForm,$this->progressData);
+            $response = $this->updateObject->update($this->request,$this->uniqueField,$this->validateForm,$this->progressData);
             $this->assertTrue(false);
         }catch (ValidationException $ex){
             $this->assertFalse(false);

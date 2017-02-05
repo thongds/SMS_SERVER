@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Helper\ActionKey;
 use App\Http\Controllers\Helper\MessageKey;
 use App\Http\Controllers\BaseAdminController\Controller;
+use App\Http\Controllers\Admin\CDUHelper\CreateNewNormal;
+use App\Http\Controllers\Admin\CDUHelper\DeleteDataNormal;
+use App\Http\Controllers\Admin\CDUHelper\UpdateDataNormal;
 use Validator;
 
 
@@ -36,7 +39,8 @@ abstract class CDUController extends Controller {
     protected $listData;
     protected $responseData = null;
     protected $mCheckValidateObject;
-    public function __construct(Model $model,$privateKey,Array $uniqueField,Array $router,Array $validateForm){$this->mainModel = $model;
+    public function __construct(Model $model,$privateKey,Array $uniqueField,Array $router,Array $validateForm){
+       $this->mainModel = $model;
        $this->mPrivateKey = $privateKey;
        $this->mRouters = $router;
        $this->mUniqueFields = $uniqueField;
@@ -89,6 +93,40 @@ abstract class CDUController extends Controller {
             }
         }
         $callback(false,null);
+    }
+
+    public function progressPost(Request $request,Array $progressData){
+        if($request->get($this->mPrivateKey)==null){
+            $createNew = new CreateNewNormal($this->mainModel);
+            $response = $createNew->createNewRow($request,$progressData,$this->mUniqueFields,$this->mValidateForm);
+            $this->mValidateMaker = $response->parseMessageToValidateMaker();
+        }
+        if($request->get($this->mPrivateKey)!=null){
+            $updateData = new UpdateDataNormal($this->mainModel);
+            $progressData = ['id' => $request->get($this->mPrivateKey)] + $progressData;
+            $response = $updateData->update($request,$this->mUniqueFields,$this->mValidateForm,$progressData);
+            $this->mValidateMaker = $response->parseMessageToValidateMaker();
+        }
+        return $this->mValidateMaker;
+    }
+
+    public function progressGet(Request $request){
+        if($request->get(ActionKey::delete)){
+                $deleteObject = new DeleteDataNormal($this->mainModel);
+                return $deleteObject->deleteById($request->get($this->mPrivateKey))->parseMessageToValidateMaker();
+
+        }
+        if($request->get(ActionKey::active)!=null){
+                $activeObject = new UpdateDataNormal($this->mainModel);
+                return $activeObject->update($request,Array(),Array(),[$this->mPrivateKey => $request->get($this->mPrivateKey),
+                ActionKey::active => $request->get(ActionKey::active)])->parseMessageToValidateMaker();
+        }
+        if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null){
+            $result = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
+            if(count($result) > 0)
+                $this->mUpdateData = $result[0];
+            return;
+        }
     }
 
     public function processGet(Request $request,$callback){

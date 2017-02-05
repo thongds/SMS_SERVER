@@ -53,10 +53,30 @@ class CreateNewNormalTest extends TestCase{
     }
 
     public function testValidateUniqueEmptyData(){
-        $this->progressData = ['name' => 'thongds'];
+        $this->progressData = Array();
+        $this->uniqueField = Array();
+        $response = $this->createNewNormalObject->validateUnique($this->uniqueField,$this->progressData);
+        $this->assertTrue($response->getStatus());
+    }
+    public function testValidateUniqueEmptyProgressData(){
+        $this->progressData = Array();
         $this->uniqueField = ['name'];
         $response = $this->createNewNormalObject->validateUnique($this->uniqueField,$this->progressData);
         $this->assertTrue($response->getStatus());
+    }
+    public function testValidateUniqueEmptyUniqueData(){
+        $this->progressData = ['id' => 1];
+        $this->uniqueField = Array();
+        $response = $this->createNewNormalObject->validateUnique($this->uniqueField,$this->progressData);
+        $this->assertTrue($response->getStatus());
+    }
+    public function testValidateUniqueFail(){
+        $this->progressData = ['name' => 'thongds'];
+        $this->uniqueField = ['name'];
+        $result = $this->createNewNormalObject->addNewRow($this->progressData);
+        $this->assertTrue($result->getStatus());
+        $response = $this->createNewNormalObject->validateUnique($this->uniqueField,$this->progressData);
+        $this->assertFalse($response->getStatus());
     }
 //
     public function testValidateUniqueHaveData(){

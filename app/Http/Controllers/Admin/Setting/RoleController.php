@@ -52,10 +52,13 @@ class RoleController extends CDUController{
     public function returnView($data)
     {
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        if(count($this->mValidateMaker->errors()->toArray())>0)
+        if(count($this->mValidateMaker->errors()->toArray())>0){
+            var_dump($this->mValidateMaker->errors()->toArray());exit;
             return view('admin/setting/adminUser.roleIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
                 'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
                 ->withErrors($this->mValidateMaker);
+        }
+
         return view('admin/setting/adminUser.roleIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
             'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
             ;

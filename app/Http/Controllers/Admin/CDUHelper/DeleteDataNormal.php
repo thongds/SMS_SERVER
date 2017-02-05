@@ -25,10 +25,14 @@ class DeleteDataNormal{
     public function deleteById($id){
         $response = new GenerateCallback();
         $result = (bool)$this->mModel->destroy($id);
-        if($result)
-            $response->setData($result,MessageKey::deleteSuccessful);
-        else
-            $response->setData($result,MessageKey::cannotDelete);
+        if($result){
+            $response->setStatus($result);
+            $response->setMessage(MessageKey::deleteSuccessful);
+        }
+        else{
+           $response->setStatus($result);
+            $response->setMessage(MessageKey::cannotDelete);
+        }
         return $response;
     }
 
