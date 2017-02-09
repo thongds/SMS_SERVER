@@ -35,13 +35,13 @@ class CategoryController extends CDUController {
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name')];
             $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
-
         }
         if ($request->isMethod('GET')){
             $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
         }
         return $this->returnView(null);
     }
+
     public function returnView($data){
         $categoryList = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
         $view = view('admin/setting/category.categoryIndex',['category_list'=>$categoryList,

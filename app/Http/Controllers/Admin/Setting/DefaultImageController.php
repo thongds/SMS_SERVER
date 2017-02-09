@@ -37,14 +37,6 @@ class DefaultImageController extends CDUFileController{
             $progressData = ['active' => $active,'name' => $request->get('name')];
             $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
             $this->mValidateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
-//            $this->processPost($request,$progressData,function ($status,$message){
-//                if($message!=null){
-//                    foreach ($message as $value){
-//                        $this->mValidateMaker->errors()->add('field',$value);
-//                    }
-//                }
-//                return $this->returnView(null);
-//            });
         }
         if ($request->isMethod('GET')){
             $this->mValidateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
