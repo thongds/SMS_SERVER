@@ -8,12 +8,13 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
+use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Http\Controllers\BaseAdminController\CDUFileController;
 use App\Models\DefaultImage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 
-class DefaultImageController extends CDUFileController{
+class DefaultImageController extends CDUController{
     private $routers = array('GET' => 'get_default_image','POST' => 'post_default_image');
     private $uniqueFields = array('name');
     private $fieldFile = array('avatar','logo','content');
@@ -25,8 +26,7 @@ class DefaultImageController extends CDUFileController{
     private $mValidateMaker;
     public function __construct(){
         $this->mValidateMaker = Validator(array(),array(),array());
-        parent::__construct($this->fieldFile,$this->fieldPath,new DefaultImage(),$this->privateKey,$this->uniqueFields,
-            $this->validateForm,$this->validateFormUpdate);
+        parent::__construct(new DefaultImage(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
     }
 
     public function index(Request $request){

@@ -25,7 +25,7 @@ class CategoryController extends CDUController {
     private $validateMaker;
     public function __construct(){
         $this->validateMaker = Validator(array(),array(),array());
-        parent::__construct(new Category(),$this->privateKey,$this->uniqueFields,$this->validateForm);
+        parent::__construct(new Category(),$this->privateKey,$this->uniqueFields,$this->validateForm,null,$this->validateForm);
     }
 
     public function index(Request $request){

@@ -34,14 +34,19 @@ abstract class CDUController extends Controller {
     protected $request;
     protected $mCheckValidateObject;
     protected $page;
-
+    protected $mFieldFile;
+    protected $mFieldPath;
+    protected $mValidateFormUpdate;
     use FileSupport;
-    public function __construct(Model $model,$privateKey,Array $uniqueField,Array $validateForm){
-        $this->mainModel = $model;
+    public function __construct(Model $model,$privateKey,Array $uniqueField,Array $validateForm,$fieldFile = null,$validateFormUpdate = array(),$fieldPath = array()){
+       $this->mainModel = $model;
        $this->mPrivateKey = $privateKey;
        $this->mUniqueFields = $uniqueField;
        $this->mValidateForm = $validateForm;
        $this->mCheckValidateObject = new Validate();
+       $this->mFieldFile = $fieldFile;
+       $this->mValidateFormUpdate = $validateFormUpdate;
+       $this->mFieldPath = $fieldPath;
     }
     abstract function returnView($data);
 
@@ -50,16 +55,15 @@ abstract class CDUController extends Controller {
             return $this->createNew($request,$progressData);
         }
         if($request->get($this->mPrivateKey)!=null){
-           $beforeUpdate = $request->session()->get(ActionKey::session);
-           $afterUpdate = [ActionKey::updated_at => UtilFunction::getNow()]+[$this->mPrivateKey => $request->get($this->mPrivateKey)]+$progressData;
-           $data = UtilFunction::mergeTwoArray($beforeUpdate,$afterUpdate,[$this->mPrivateKey]);
-           return $this->update($request,$data,$this->mValidateForm);
+            return $this->progressUpdate($request,$progressData);
         }
     }
+
 
     public function progressGet(Request $request){
         $response = new GenerateCallback();
         if($request->get(ActionKey::delete)){
+            $this->deleteOldFile($this->getOldFilePath($request,$this->mainModel,$this->mPrivateKey,$this->mFieldPath));
             $response = $this->delete($request);
         }
         if($request->get(ActionKey::active)!=null){
@@ -98,6 +102,28 @@ abstract class CDUController extends Controller {
             $request->session()->put(ActionKey::session,$this->mUpdateData);
         }
         return;
+    }
+    protected function progressUpdate(Request $request,Array $progressData){
+        $oldFilePath = array();
+        $beforeUpdate = $request->session()->get(ActionKey::session);
+        $afterUpdate = [ActionKey::updated_at => UtilFunction::getNow()]+[$this->mPrivateKey => $request->get($this->mPrivateKey)]+$progressData;
+        $data = UtilFunction::mergeTwoArray($beforeUpdate,$afterUpdate,[$this->mPrivateKey]);
+        $fieldOfDelete = array();
+        if($this->mFieldFile !=null ){
+            foreach ($this->mFieldFile as $value){
+                if($request->file($value)!=null){
+                    $fieldOfDelete = $fieldOfDelete + [$value.'_path'];
+                }
+            }
+            if(!empty($fieldOfDelete)){
+                $oldFilePath =  $this->getOldFilePath($request,$this->mainModel,$this->mPrivateKey,$fieldOfDelete);
+            }
+        }
+        $response = $this->update($request,$data,$this->mValidateFormUpdate);;
+        if($response->getStatus() && $this->mFieldFile !=null ){
+            $this->deleteOldFile($oldFilePath);
+        }
+        return $response;
     }
     protected function update(Request $request,Array $progressData,Array $validateUpdateForm){
         $updateData = new UpdateDataNormal($this->mainModel);
