@@ -97,9 +97,6 @@ abstract class CDUFileController extends CDUController{
             unlink($value);
         }
     }
-    public function checkValidateByForm(Request $request,Array $validateForm){
-        $this->validate($request,$validateForm);
-    }
     public function progressFileData(Request $request,Array $fieldFile,Array $progressFileData){
         foreach ($fieldFile as $item){
             $fileUpload = $this->_getFilePath($request->file($item));

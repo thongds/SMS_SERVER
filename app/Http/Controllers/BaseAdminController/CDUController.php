@@ -34,6 +34,8 @@ abstract class CDUController extends Controller {
     protected $request;
     protected $mCheckValidateObject;
     protected $page;
+
+    use FileSupport;
     public function __construct(Model $model,$privateKey,Array $uniqueField,Array $validateForm){
         $this->mainModel = $model;
        $this->mPrivateKey = $privateKey;
@@ -102,5 +104,6 @@ abstract class CDUController extends Controller {
         $response = $updateData->update($request,$this->mUniqueFields,$validateUpdateForm,$progressData);
         return  $response;
     }
+
 
 }
