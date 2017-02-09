@@ -13,8 +13,7 @@ class UtilFunction{
 
     static function mergeTwoArray(Array $beforeUpdate,Array $afterUpdate,Array $ignoreKey){
         $resultArray = array();
-        if(count($beforeUpdate) != count($afterUpdate))
-            return null;
+
         foreach ($afterUpdate as $key1 => $value1){
             if(in_array($key1,$ignoreKey)){
                 $resultArray[$key1] = $afterUpdate[$key1];

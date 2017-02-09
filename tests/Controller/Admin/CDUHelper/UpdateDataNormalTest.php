@@ -71,5 +71,10 @@ class UpdateDataNormalTest extends TestCase{
         $response = $this->updateObject->updateRow(-1,$this->progressData);
         $this->assertFalse($response);
     }
+    public function testUpdateRowEmptyProgressData(){
+        $data = $this->model->where('active',1)->first()->toArray();
+        $response = $this->updateObject->updateRow($data['id'],$this->progressData);
+        $this->assertTrue($response);
+    }
 
 }

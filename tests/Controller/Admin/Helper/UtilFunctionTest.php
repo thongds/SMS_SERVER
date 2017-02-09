@@ -29,7 +29,14 @@ class UtilFunctionTest extends TestCase{
         $afterUpdate = ['name' => '123','birthday' => '12/11/100','id'=>1];
         $ignoreKey = ['id'];
         $result = UtilFunction::mergeTwoArray($beforeUpdate,$afterUpdate,$ignoreKey);
-        $this->assertNull($result);
+        $this->assertEquals(2,count($result));
+    }
+    public function testArrayMergeSameArray(){
+        $beforeUpdate = ['name' => '123','birthday' => '12/12/1990','id' =>1,'a' => 'b'];
+        $afterUpdate = ['name' => '123','birthday' => '12/12/1990','id'=>1];
+        $ignoreKey = ['id'];
+        $result = UtilFunction::mergeTwoArray($beforeUpdate,$afterUpdate,$ignoreKey);
+        $this->assertEquals(1,count($result));
     }
     public function testArrayMergeEmpty(){
         $beforeUpdate = array();
