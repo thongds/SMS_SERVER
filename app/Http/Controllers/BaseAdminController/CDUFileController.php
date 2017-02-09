@@ -59,39 +59,6 @@ abstract class CDUFileController extends CDUController{
 
     }
 
-//    public function processPost(Request $request,Array $processData,$callback){
-//
-//        // check field unique
-//
-//        //create new
-//        if($request->get($this->mPrivateKey)==null){
-//            $this->checkValidateByForm($request,$this->mValidateForm);
-//            foreach ($this->mUniqueFields as $uniqueFieldName){
-//                $nameRepose = $this->mainModel->where($uniqueFieldName,$request->get($uniqueFieldName))->get()->toArray();
-//                if(!empty($nameRepose)){
-//                    $this->isHaveUniqueError = true;
-//                    $this->message = array_merge($this->message,[$uniqueFieldName." ".MessageKey::wasExist]);
-//                }
-//            }
-//            if ($this->isHaveUniqueError) {
-//                $callback(true,$this->message);
-//                return;
-//            }
-//
-//            if($this->create($processData)){
-//                $this->message = array_merge($this->message,[MessageKey::createSuccessful]);
-//                $callback(true,$this->message);
-//                return;
-//            }else{
-//                $this->message = array_merge($this->message,[MessageKey::cannotSave]);
-//                $callback(false,$this->message);
-//                return;
-//            }
-//
-//        }
-//        //update
-//
-//    }
     private function updateFile(Request $request,Array $progressData){
         if($request->get($this->mPrivateKey) !=null){
             $oldFilePath = array();
@@ -114,44 +81,13 @@ abstract class CDUFileController extends CDUController{
             return $response;
         }
     }
-//    public function processGet(Request $request,$callback,$foreignData = null){
-//        if($request->get(ActionKey::delete)){
-//            $this->deleteOldFile($this->getOldFilePath($request,$this->mFieldPath));
-//            $status =(boolean)$this->delete($request->get($this->mPrivateKey));
-//            $callback($status,null);
-//            return;
-//        }
-//        if($request->get(ActionKey::active)!=null){
-//            $status = (boolean)$this->changeStatus($request->get($this->mPrivateKey),$request ->get(ActionKey::active));
-//            $callback($status,null);
-//            return;
-//        }
-//        if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null){
-//            $result = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
-//            if(count($result) > 0)
-//                $this->mUpdateData = $result[0];
-//            $callback((boolean)$result,null);
-//            return;
-//        }
-//        if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null && $foreignData !=null){
-//            $result = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
-//            if(count($result) > 0)
-//                $this->mUpdateData = $result[0];
-//            $callback((boolean)$result,null);
-//            return;
-//        }
-//        //no one case match
-//        $callback(null,null);
-//        return;
-//
-//    }
+
     public function getOldFilePath(Request $request,Array $fieldOfPathDelete){
         $oldFilePath = array();
         $data = $this->mainModel->where($this->mPrivateKey,$request->get($this->mPrivateKey))->get()->toArray();
         if($data !=null){
             foreach ($fieldOfPathDelete as $value){
                 array_push($oldFilePath,$data[0][$value]);
-               // $oldFilePath = array_push($oldFilePath, [$data[0][$value]]);
             }
         }
         return $oldFilePath;
