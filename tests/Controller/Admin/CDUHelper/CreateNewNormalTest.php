@@ -100,7 +100,10 @@ class CreateNewNormalTest extends TestCase{
             var_dump($e->getMessage());exit;
             $this->assertTrue(false);
         }
-
+    }
+    public function testProtect(){
+        $result = $this->invokeMethod($this->createNewNormalObject,'forTest',[true]);
+        $this->assertTrue($result);
     }
 
 }

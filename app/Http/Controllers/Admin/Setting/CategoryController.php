@@ -18,7 +18,6 @@ use Validator;
 
 class CategoryController extends CDUController {
 
-    private $routers = array('get' => 'get_category','post' => 'post_category');
     private $uniqueFields = array('name');
     private $privateKey = 'id';
     private $validateForm = ['name'=>'required|max:255'];
@@ -26,7 +25,7 @@ class CategoryController extends CDUController {
     private $validateMaker;
     public function __construct(){
         $this->validateMaker = Validator(array(),array(),array());
-        parent::__construct(new Category(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm);
+        parent::__construct(new Category(),$this->privateKey,$this->uniqueFields,$this->validateForm);
     }
 
     public function index(Request $request){
@@ -35,13 +34,13 @@ class CategoryController extends CDUController {
         if ($request->isMethod('POST')){
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name')];
-            $this->validateMaker = $this->progressPost($request,$progressData);
+            $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
 
         }
         if ($request->isMethod('GET')){
-            $this->validateMaker = $this->progressGet($request);
+            $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
         }
-        return $this->returnView($this->responseData);
+        return $this->returnView(null);
     }
     public function returnView($data){
         $categoryList = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);

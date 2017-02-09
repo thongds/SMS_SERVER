@@ -70,5 +70,8 @@ class CreateNewNormal{
         }
         return $response;
     }
+    protected function forTest($params){
+        return $params;
+    }
 
 }

@@ -12,4 +12,7 @@ abstract class ActionKey {
     const delete = "delete";
     const active = "active";
     const isEdit = "isEdit";
+    const session = 'update_session';
+    const create_at = 'created_at';
+    const updated_at = 'updated_at';
 }

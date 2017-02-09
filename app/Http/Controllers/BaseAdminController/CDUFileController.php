@@ -8,10 +8,14 @@
 
 namespace App\Http\Controllers\BaseAdminController;
 
+use App\Http\Controllers\Helper\GenerateCallback;
+use App\Http\Controllers\Helper\Validate;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Helper\ActionKey;
 use App\Http\Controllers\Helper\MessageKey;
+
+
 use Validator;
 
 abstract class CDUFileController extends CDUController{
@@ -19,15 +23,38 @@ abstract class CDUFileController extends CDUController{
     protected $mFieldFile;
     protected $mFieldPath;
     protected $mValidateFormUpdate;
-    public function __construct(array $fieldFile,array $fieldPath,Model $model, $privateKey, array $uniqueField, array $router, array $validateForm, array $validateFormUpdate)
+
+    public function __construct(array $fieldFile,array $fieldPath,Model $model, $privateKey, array $uniqueField,
+                                array $validateForm, array $validateFormUpdate)
     {
         $this->mFieldFile = $fieldFile;
         $this->mFieldPath = $fieldPath;
         $this->mValidateFormUpdate = $validateFormUpdate;
-        parent::__construct($model, $privateKey, $uniqueField, $router, $validateForm);
+
+        parent::__construct($model,$privateKey,$uniqueField,$validateForm);
     }
 
-    public function progressPost(Request $request,Array $processData){
+    public function progressPost(Request $request,Array $progressData){
+        if($request->get($this->mPrivateKey)==null){
+            return $this->createNew($request,$progressData);
+        }
+        if($request->get($this->mPrivateKey)!=null){
+           return $this->updateFile($request,$progressData);
+        }
+    }
+    public function progressGet(Request $request){
+        $response = new GenerateCallback();
+        if($request->get(ActionKey::delete)){
+            $this->deleteOldFile($request,$this->mFieldPath);
+            $response =  $this->delete($request);
+        }
+        if($request->get(ActionKey::active)!=null){
+            $response = $this->active($request);
+        }
+        if($request->get(ActionKey::isEdit)!=null && $request->get($this->mPrivateKey) != null){
+            $this->edit($request);
+        }
+        return $response;
 
     }
 
@@ -62,28 +89,26 @@ abstract class CDUFileController extends CDUController{
 
         }
         //update
+
+    }
+    private function updateFile(Request $request,Array $progressData){
         if($request->get($this->mPrivateKey) !=null){
-            $this->checkValidateByForm($request,$this->mValidateFormUpdate);
-            $fieldOfDelete = array();
-            foreach ($this->mFieldFile as $value){
-                if($request->file($value)!=null){
-                    $fieldOfDelete = array_merge($fieldOfDelete,[$value.'_path']);
+            $response = $this->update($request,$progressData,$this->mValidateFormUpdate);
+            if($response->getStatus()){
+
+                $fieldOfDelete = array();
+                foreach ($this->mFieldFile as $value){
+                    if($request->file($value)!=null){
+                        $fieldOfDelete = array_merge($fieldOfDelete,[$value.'_path']);
+                    }
+                }
+                if(!empty($fieldOfDelete)){
+                    $this->deleteOldFile($request,$fieldOfDelete);
                 }
             }
-            if(!empty($fieldOfDelete)){
-                $this->deleteOldFile($request,$fieldOfDelete);
-            }
-            if($this->update($request->get($this->mPrivateKey),$processData)){
-                array_push($this->message,MessageKey::updateSuccessful);
-                $callback(true,$this->message);
-                return;
-            }else{
-                array_push($this->message,MessageKey::cannotUpdate);
-                $callback(false,$this->message);
-                return;
-            }
+            return $response;
+
         }
-        $callback(false,null);
     }
     public function processGet(Request $request,$callback,$foreignData = null){
         if($request->get(ActionKey::delete)){
@@ -129,12 +154,21 @@ abstract class CDUFileController extends CDUController{
     }
     public function progressFileData(Request $request,Array $fieldFile,Array $progressFileData){
         foreach ($fieldFile as $item){
-            $fileUpload = $this->_getFilepath($request->file($item));
+            $fileUpload = $this->_getFilePath($request->file($item));
             if($fileUpload !=null)
                 $progressFileData = array_merge($progressFileData,[$item => $fileUpload['link'],
                     $item.'_path' => $fileUpload['path']]);
         }
         return $progressFileData;
+    }
+
+    protected function _getFilePath($file_upload){
+        if($file_upload == null)
+            return '';
+        $file_name = time().'_random_'.rand(5, 100).$file_upload->getFilename().'.'.$file_upload->getClientOriginalExtension();
+        $file_upload->move(public_path("uploads"), $file_name);
+        $fileData = ['link' =>url('/').'/uploads/'.$file_name,'path' =>public_path("uploads").'/'.$file_name ];
+        return  $fileData;
     }
 
 }
