@@ -24,11 +24,13 @@ class SongDetail extends Migration
             $table->unsignedInteger('language_id');
             $table->unsignedInteger('singer_id');
             $table->unsignedInteger('subtitle_type_id');
+            $table->unsignedInteger('song_type_id');
 
             $table->foreign('category_id')->references('id')->on('category');
             $table->foreign('language_id')->references('id')->on('language');
             $table->foreign('singer_id')->references('id')->on('singer');
             $table->foreign('subtitle_type_id')->references('id')->on('subtitle_type');
+            $table->foreign('song_type_id')->references('id')->on('song_type');
         });
     }
 

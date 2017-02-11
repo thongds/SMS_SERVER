@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Singer;
 use App\Models\SongDetail;
+use App\Models\SongType;
 use App\Models\SubtitleType;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class SongDetailController extends CDUController{
     private $foreignData ;
     private $validateForm = ['name'=>'required|max:255','duration' => 'required|numeric','avatar' => 'required',
         'song_source' => 'required','subtitle_source' => 'required','category_id' => 'required','language_id' => 'required'
-        ,'singer_id' => 'required','subtitle_type_id' => 'required'];
+        ,'singer_id' => 'required','subtitle_type_id' => 'required','song_type_id' => 'required'];
     private $validateFormUpdate = ['name'=>'required|max:255','duration' => 'required|numeric'];
     private $pagingNumber = 3;
     private $validateMaker;
@@ -55,7 +56,13 @@ class SongDetailController extends CDUController{
             'fr_select_field' => 'name',
             'label' => 'Subtitle Type'
         ];
-        $this->foreignData = [$categoryInfo,$language,$singer,$subtitleType];
+        $songType = ['fr_id' =>'song_type_id',
+            'fr_data'=>$this->getDataByModel(new SongType()),
+            'fr_private_id' =>'id',
+            'fr_select_field' => 'name',
+            'label' => 'Song Type'
+        ];
+        $this->foreignData = [$categoryInfo,$language,$singer,$subtitleType,$songType];
         parent::__construct(new SongDetail(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
     }
 
@@ -66,7 +73,8 @@ class SongDetailController extends CDUController{
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name'),'duration' => $request->get('duration'),
                 'category_id' => $request->get('category_id'),'language_id' => $request->get('language_id'),
-                'singer_id' => $request->get('singer_id'),'subtitle_type_id' => $request->get('subtitle_type_id')
+                'singer_id' => $request->get('singer_id'),'subtitle_type_id' => $request->get('subtitle_type_id'),
+                'song_type_id' => $request->get('song_type_id')
             ];
             $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
             $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();

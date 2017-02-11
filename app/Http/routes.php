@@ -52,6 +52,9 @@ Route::group(['namespace' => 'Admin\Setting'],function (){
     //setting role
     Route::get('admin/role','RoleController@index')->name('get_role');
     Route::post('admin/role','RoleController@index')->name('post_role');
+    //setting song type
+    Route::get('admin/song-type','SongTypeController@index')->name('get_song_type');
+    Route::post('admin/song-type','SongTypeController@index')->name('post_song_type');
     //setting subscribe type
     Route::get('admin/subscribe-type','SubscribeTypeController@index')->name('get_subscribe_type');
     Route::post('admin/subscribe-type','SubscribeTypeController@index')->name('post_subscribe_type');
