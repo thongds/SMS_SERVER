@@ -37,8 +37,11 @@ abstract class CDUController extends Controller {
     protected $mFieldFile;
     protected $mFieldPath;
     protected $mValidateFormUpdate;
+    protected $mForeignData;
     use FileSupport;
-    public function __construct(Model $model,$privateKey,Array $uniqueField,Array $validateForm,$fieldFile = null,$validateFormUpdate = array(),$fieldPath = array()){
+
+    public function __construct(Model $model,$privateKey,Array $uniqueField,Array $validateForm,$fieldFile = null,
+                                $validateFormUpdate = array(),$fieldPath = array(),$foreignData = array()){
        $this->mainModel = $model;
        $this->mPrivateKey = $privateKey;
        $this->mUniqueFields = $uniqueField;
@@ -47,6 +50,7 @@ abstract class CDUController extends Controller {
        $this->mFieldFile = $fieldFile;
        $this->mValidateFormUpdate = $validateFormUpdate;
        $this->mFieldPath = $fieldPath;
+       $this->mForeignData = $foreignData;
     }
     abstract function returnView($data);
 
@@ -129,6 +133,10 @@ abstract class CDUController extends Controller {
         $updateData = new UpdateDataNormal($this->mainModel);
         $response = $updateData->update($request,$this->mUniqueFields,$validateUpdateForm,$progressData);
         return  $response;
+    }
+
+    protected function getDataByModel(Model $model){
+        return $model->where('active',1)->get()->toArray();
     }
 
 

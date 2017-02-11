@@ -16,14 +16,15 @@ use Illuminate\Http\Request;
 
 class RoleController extends CDUController{
 
-    private $routers = array('GET' => 'get_role','POST' => 'post_role');
+    private $mRouter = ['GET' => 'get_role','POST' => 'post_role'];
+    private $validateMaker;
     private $uniqueFields = array('name','role_type');
     private $privateKey = 'id';
-    private $validateForm = ['name'=>'required|max:255','role_type' => 'required|numeric'];
+    private $validateForm = ['role_type' => 'required|numeric','name'=>'required|max:255'];
     private $pagingNumber = 3;
-    private $pageTitle = 'Subtitle Type';
     public function __construct(){
-        parent::__construct(new AdminRole(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm);
+        $this->validateMaker = Validator(array(),array(),array());
+        parent::__construct(new AdminRole(),$this->privateKey,$this->uniqueFields,$this->validateForm,null,$this->validateForm);
     }
 
     public function index(Request $request){
@@ -32,35 +33,24 @@ class RoleController extends CDUController{
         if ($request->isMethod('POST')){
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name'),'role_type' => $request->get('role_type')];
-            $this->processPost($request,$progressData,function ($status,$message){
-                if($message!=null){
-                    foreach ($message as $value){
-                        $this->mValidateMaker->errors()->add('field',$value);
-                    }
-                }
-                return $this->returnView(null);
-            });
+            $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
         }
         if ($request->isMethod('GET')){
-            $this->processGet($request,function ($data){
-
-            });
+            $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
         }
         return $this->returnView(null);
 
     }
-    public function returnView($data)
-    {
+    public function returnView($data){
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        if(count($this->mValidateMaker->errors()->toArray())>0){
-            var_dump($this->mValidateMaker->errors()->toArray());exit;
-            return view('admin/setting/adminUser.roleIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
-                'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
-                ->withErrors($this->mValidateMaker);
-        }
+        $view = view('admin/setting/adminUser.roleIndex',['router' => $this->mRouter,'listData'=>$listData,
+            'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),
+            'update_data' =>$this->mUpdateData]);
 
-        return view('admin/setting/adminUser.roleIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
-            'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
-            ;
+        if($this->validateMaker!=null && count($this->validateMaker->errors()->toArray())>0){
+            $message = $this->validateMaker->errors();
+            return $view->withErrors($message);
+        }
+        return $view;
     }
 }

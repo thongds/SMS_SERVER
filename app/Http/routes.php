@@ -32,8 +32,8 @@ Route::group(['namespace' => 'Auth'],function (){
 });
 /* create data group */
 Route::group(['namespace' => 'Admin\CreateData'],function (){
-    Route::get('admin/song-index','SongDetailController@index')->name('get_song_index');
-    Route::post('admin/song-index','SongDetailController@index')->name('post_song_index');
+    Route::get('admin/song-index','SongDetailController@index')->name('get_song');
+    Route::post('admin/song-index','SongDetailController@index')->name('post_song');
 });
 /* news controller group */
 Route::group(['namespace' => 'Admin\Setting'],function (){
@@ -61,6 +61,7 @@ Route::group(['namespace' => 'Admin\Setting'],function (){
     //setting default image
     Route::get('admin/default-image','DefaultImageController@index')->name('get_default_image');
     Route::post('admin/default-image','DefaultImageController@index')->name('post_default_image');
+
 
 });
 /* news controller group */

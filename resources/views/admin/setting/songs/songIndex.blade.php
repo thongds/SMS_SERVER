@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('title','Category Index')
+@section('title','Singer Index')
 @section('content')
     <div class="row">
         <!-- left column -->
@@ -17,6 +17,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Avatar</th>
                                 <th>Status</th>
                                 <th>Action</th>
                                 <th>Created</th>
@@ -41,7 +42,8 @@
                                     }
                                     echo '<tr class="'.$class.'">';
                                     echo '<td>'.$list['id'].'</td>';
-                                    echo '<td class="col-md-4">'.$list['name'].'</td>';
+                                    echo '<td class="col-md-2">'.$list['name'].'</td>';
+                                    echo '<td><img width="100" height="100" src="'.$list['avatar'].'"></td>';
                                     $labeClass = $list['active']?"label-success" : "label-danger";
                                     $labeName = $list['active']?"Active" : "Block";
 
@@ -74,7 +76,7 @@
 
                 <!-- /.box-header -->
                 <!-- form start -->
-                <?php echo Form::open(array('route'=>$router['POST'],'method'=>'post','enctype'=>'multipart/form-data')) ?>
+                <?php echo Form::open(array('route'=> $router['POST'],'method'=>'post','enctype'=>'multipart/form-data')) ?>
                 {{--<form role="form">--}}
                 <div class="box-header with-border">
                     <h3 class="box-title">New Category</h3>
@@ -95,13 +97,50 @@
                 <div class="box-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Category Name</label>
-                        @if(!$isEdit)
-                            <input type="input" name ="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name Category">
-                        @else
-                            <input type="input" name ="name" value = "<?php echo $update_data["name"]; ?>" class="form-control" id="exampleInputEmail1" >
-                        @endif
+                        <label for="exampleInputEmail1">Song Name</label>
+                        <input type="input" name ="name" value = "<?php echo $update_data!=null?$update_data["name"]:""; ?>"
+                               class="form-control" id="exampleInputEmail1" placeholder="Song Name" >
                     </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Duration</label>
+                        <input type="input" name ="duration" value = "<?php echo $update_data!=null?$update_data["duration"]:""; ?>" class="form-control" id="exampleInputEmail1"
+                        placeholder="Duration">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Avatar</label>
+                        <input type="file" name ="avatar" class="form-control" id="exampleInputEmail1" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Song source</label>
+                        <input type="file" name ="song_source" class="form-control" id="exampleInputEmail1" >
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Subtitle source</label>
+                        <input type="file" name ="subtitle_source" class="form-control" id="exampleInputEmail1" >
+                    </div>
+
+                    @if(isset($foreignData) && $foreignData != null)
+                        @foreach($foreignData as $key => $value)
+                        <label > <? echo $value['label'] ?></label>
+                        <select class="form-control" name=<? echo $value['fr_id'] ?>>
+                            <?php
+                            $id =-1;
+                            if($update_data !=null){
+                                $id = $update_data[$value['fr_id']];
+                            }
+                            foreach ($value['fr_data'] as $data){
+                                if($id == $data['id'])
+                                    echo ' <option value="'.$data['id'].'" selected ="selected">'.$data[$value['fr_select_field']].'</option>';
+                                else
+                                    echo ' <option value="'.$data['id'].'">'.$data[$value['fr_select_field']].'</option>';
+                            }
+                            ?>
+
+                        </select>
+                        @endforeach
+                    @endif
+
                     <div class="checkbox">
                         <label>
                             @if($update_data!=null & $update_data['active'] != 1)

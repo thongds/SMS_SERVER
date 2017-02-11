@@ -7,17 +7,14 @@
  */
 namespace App\Http\Controllers\Admin\Setting;
 
-use App\Http\Controllers\Admin\CDUHelper\CreateNewNormal;
-use App\Http\Controllers\Admin\CDUHelper\DeleteDataNormal;
-use App\Http\Controllers\Admin\CDUHelper\UpdateDataNormal;
 use App\Http\Controllers\BaseAdminController\CDUController;
-use App\Http\Controllers\Helper\ActionKey;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Validator;
 
 class CategoryController extends CDUController {
 
+    private $mRouter = ['GET' => 'get_category', 'POST' => 'post_category'];
     private $uniqueFields = array('name');
     private $privateKey = 'id';
     private $validateForm = ['name'=>'required|max:255'];
@@ -44,7 +41,7 @@ class CategoryController extends CDUController {
 
     public function returnView($data){
         $categoryList = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        $view = view('admin/setting/category.categoryIndex',['category_list'=>$categoryList,
+        $view = view('admin/setting/category.categoryIndex',['router' => $this->mRouter,'category_list'=>$categoryList,
             'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),
             'update_data' =>$this->mUpdateData]);
 

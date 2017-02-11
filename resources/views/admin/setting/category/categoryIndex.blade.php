@@ -75,7 +75,7 @@
 
                 <!-- /.box-header -->
                 <!-- form start -->
-                <?php echo Form::open(array('route'=>'post_category','method'=>'post','enctype'=>'multipart/form-data')) ?>
+                <?php echo Form::open(array('route'=>$router['POST'],'method'=>'post','enctype'=>'multipart/form-data')) ?>
                 {{--<form role="form">--}}
                 <div class="box-header with-border">
                     <h3 class="box-title">New Category</h3>

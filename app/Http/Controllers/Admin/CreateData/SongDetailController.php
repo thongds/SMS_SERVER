@@ -8,55 +8,89 @@
  */
 namespace App\Http\Controllers\Admin\CreateData;
 
-use App\Http\Controllers\BaseAdminController\CDUFileWithForeignDataController;
+use App\Http\Controllers\BaseAdminController\CDUController;
+use App\Models\Category;
+use App\Models\Language;
+use App\Models\Singer;
 use App\Models\SongDetail;
+use App\Models\SubtitleType;
 use Illuminate\Http\Request;
 
-class SongDetailController extends CDUFileWithForeignDataController{
-    private $routers = array('GET' => 'get_song_index','POST' => 'post_song_index');
+class SongDetailController extends CDUController{
+    private $mRouter = array('GET' => 'get_song','POST' => 'post_song');
     private $uniqueFields = array('name');
-    private $fieldFile = array('avatar');
-    private $fieldPath = array('avatar_path');
     private $privateKey = 'id';
-    private $validateForm = ['name'=>'required|max:255','avatar' => 'required'];
-    private $validateFormUpdate = ['name'=>'required|max:255'];
+    private $fieldFile = array('avatar','subtitle_source','song_source');
+    private $fieldPath = array('avatar_path','subtitle_source_path','song_source_path');
+    private $foreignData ;
+    private $validateForm = ['name'=>'required|max:255','duration' => 'required|numeric','avatar' => 'required',
+        'song_source' => 'required','subtitle_source' => 'required','category_id' => 'required','language_id' => 'required'
+        ,'singer_id' => 'required','subtitle_type_id' => 'required'];
+    private $validateFormUpdate = ['name'=>'required|max:255','duration' => 'required|numeric'];
     private $pagingNumber = 3;
+    private $validateMaker;
     public function __construct(){
-        parent::__construct($this->fieldFile,$this->fieldPath,new SongDetail(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm,$this->validateFormUpdate);
+        $this->validateMaker = Validator(array(),array(),array());
+        $categoryInfo = ['fr_id' =>'category_id',
+            'fr_data'=>$this->getDataByModel(new Category()),
+            'fr_private_id' =>'id',
+            'fr_select_field' => 'name',
+            'label' => 'Category'
+        ];
+        $language = ['fr_id' =>'language_id',
+            'fr_data'=>$this->getDataByModel(new Language()),
+            'fr_private_id' =>'id',
+            'fr_select_field' => 'name',
+            'label' => 'Language'
+        ];
+        $singer = ['fr_id' =>'singer_id',
+            'fr_data'=>$this->getDataByModel(new Singer()),
+            'fr_private_id' =>'id',
+            'fr_select_field' => 'name',
+            'label' => 'Singer'
+        ];
+        $subtitleType = ['fr_id' =>'subtitle_type_id',
+            'fr_data'=>$this->getDataByModel(new SubtitleType()),
+            'fr_private_id' =>'id',
+            'fr_select_field' => 'name',
+            'label' => 'Subtitle Type'
+        ];
+        $this->foreignData = [$categoryInfo,$language,$singer,$subtitleType];
+        parent::__construct(new SongDetail(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
     }
 
     public function index(Request $request){
-        $this->request = $request ;
+        $this->request = $request;
         $this->page = $request->get('page');
-
         if ($request->isMethod('POST')){
-
             $active = !empty($request->get('active')) ? 1 : 0 ;
-            $progressData = ['active' => $active,'name' => $request->get('name')];
+            $progressData = ['active' => $active,'name' => $request->get('name'),'duration' => $request->get('duration'),
+                'category_id' => $request->get('category_id'),'language_id' => $request->get('language_id'),
+                'singer_id' => $request->get('singer_id'),'subtitle_type_id' => $request->get('subtitle_type_id')
+            ];
             $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
-
-            $this->processPost($request,$progressData,function ($status,$message){
-                if($message!=null){
-                    foreach ($message as $value){
-                        $this->mValidateMaker->errors()->add('field',$value);
-                    }
-                }
-            });
+            $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
         }
         if ($request->isMethod('GET')){
-            $this->processGet($request,function ($data){
-                $this->responseData = $data;
-             });
+            $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
         }
-        return $this->returnView($this->responseData);
+        return $this->returnView(null);
     }
-    public function returnView($data = null)
-    {
-        // TODO: Implement returnView() method.
+
+    public function returnView($data){
+
         $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        return view('admin/create_data/createSongDataIndex',['listData'=>$listData,'router' => $this->routers,
-            'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
-            ->withErrors($this->mValidateMaker);
+        $view = view('admin/setting/songs.songIndex',['router' => $this->mRouter,'listData'=>$listData,
+            'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),
+            'update_data' =>$this->mUpdateData,'foreignData' => $this->foreignData]);
+
+        if($this->validateMaker!=null && count($this->validateMaker->errors()->toArray())>0){
+            $message = $this->validateMaker->errors();
+            return $view->withErrors($message);
+        }
+
+        return $view;
+
     }
 
 }

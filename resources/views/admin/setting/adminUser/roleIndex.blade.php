@@ -99,7 +99,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Category Name</label>
                         @if(!$isEdit)
-                            <input type="input" name ="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name Category">
+                            <input type="input" name ="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name Role">
                         @else
                             <input type="input" name ="name" value = "<?php echo $update_data["name"]; ?>" class="form-control" id="exampleInputEmail1" >
                         @endif
