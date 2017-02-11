@@ -20,7 +20,7 @@
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
-                                <th>Created</th>
+                                <th>Source</th>
                             </tr>
                             <?php
                             if($listData){
@@ -53,7 +53,7 @@
                                           '.$status_button.'
                                           <a href= "'.$delete_url.'" class="col-sm-3 btn btn-sm btn-danger btn-flat pull-left">Delete</a>
                                           </td>';
-                                    echo '<td>'.$list['created_at'].'</td>';
+                                    echo '<td><a href="">'.$list['created_at'].'</a></td>';
                                     echo '<tr>';
 
                                 }

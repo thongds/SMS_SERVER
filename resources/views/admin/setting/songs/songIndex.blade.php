@@ -18,9 +18,9 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Avatar</th>
+                                <th>Song source</th>
                                 <th>Status</th>
                                 <th>Action</th>
-                                <th>Created</th>
                             </tr>
                             <?php
                             if($listData){
@@ -44,6 +44,7 @@
                                     echo '<td>'.$list['id'].'</td>';
                                     echo '<td class="col-md-2">'.$list['name'].'</td>';
                                     echo '<td><img width="100" height="100" src="'.$list['avatar'].'"></td>';
+                                    echo '<td><a href="'.$list['song_source'].'">Song source</a></td>';
                                     $labeClass = $list['active']?"label-success" : "label-danger";
                                     $labeName = $list['active']?"Active" : "Block";
 
@@ -53,7 +54,7 @@
                                           '.$status_button.'
                                           <a href= "'.$delete_url.'" class="col-sm-3 btn btn-sm btn-danger btn-flat pull-left">Delete</a>
                                           </td>';
-                                    echo '<td>'.$list['created_at'].'</td>';
+
                                     echo '<tr>';
 
                                 }
