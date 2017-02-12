@@ -63,6 +63,7 @@ class CreateNewNormal{
         if($result){
             $response->setStatus($result);
             $response->setMessage(MessageKey::createSuccessful);
+            $response->setData($this->mModel->id);
 
         }else{
             $response->setStatus($result);

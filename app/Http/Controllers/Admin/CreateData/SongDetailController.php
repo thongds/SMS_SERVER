@@ -80,18 +80,24 @@ class SongDetailController extends CDUAbstractController{
                 'song_type_id' => $request->get('song_type_id')
             ];
             $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
-            $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
-            $cduNewLeastSong = new CDUController(new NewLeastSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
-            if($cduNewLeastSong->fifoDatabase('new_least_song')){
-                $this->validateMaker = $cduNewLeastSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
-            }
-            if(!empty($request->get('is_hot_song')) ? true : false){
-                $cduHotSong = new CDUController(new HotSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
-                if($cduHotSong->fifoDatabase('hot_song')){
-                    $this->validateMaker = $cduHotSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+            $result = $this->progressPost($request,$progressData);
+            if($result->getStatus()){
+                $progressData= $progressData+['song_detail_id'=>$result->getData()];
+                
+                $cduNewLeastSong = new CDUController(new NewLeastSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
+                if($cduNewLeastSong->fifoDatabase('new_least_song')){
+                    $this->validateMaker = $cduNewLeastSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
                 }
+                if(!empty($request->get('is_hot_song')) ? true : false){
+                    $cduHotSong = new CDUController(new HotSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
+                    if($cduHotSong->fifoDatabase('hot_song')){
+                        $this->validateMaker = $cduHotSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+                    }
 
+                }
             }
+            $this->validateMaker = $result->parseMessageToValidateMaker();
+
         }
         if ($request->isMethod('GET')){
             $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();

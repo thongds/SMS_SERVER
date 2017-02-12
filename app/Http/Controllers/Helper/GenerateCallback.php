@@ -15,6 +15,7 @@ class GenerateCallback {
     public $statusJsonKey = "status";
     public $messageJsonKey = "message";
     private $mValidateMaker;
+    private $mData = null;
     public function __construct($status = false,Array $message = Array()){
         $this->status = (boolean)$status;
         $this->responseMessage = $message;
@@ -26,6 +27,12 @@ class GenerateCallback {
     }
     public function getMessage(){
         return $this->responseMessage;
+    }
+    public function getData(){
+        return $this->mData;
+    }
+    public function setData($data){
+        $this->mData = $data;
     }
     public function responseJSON(){
         $jsonFormat = [$this->statusJsonKey => $this->status,$this->messageJsonKey => $this->responseMessage];
