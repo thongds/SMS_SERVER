@@ -83,7 +83,6 @@ class SongDetailController extends CDUAbstractController{
             $result = $this->progressPost($request,$progressData);
             if($result->getStatus()){
                 $progressData= $progressData+['song_detail_id'=>$result->getData()];
-                
                 $cduNewLeastSong = new CDUController(new NewLeastSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
                 if($cduNewLeastSong->fifoDatabase('new_least_song')){
                     $this->validateMaker = $cduNewLeastSong->progressPost($request,$progressData)->parseMessageToValidateMaker();

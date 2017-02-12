@@ -65,8 +65,11 @@ class CDUController extends Controller {
     public function progressGet(Request $request){
         $response = new GenerateCallback();
         if($request->get(ActionKey::delete)){
-            $this->deleteOldFile($this->getOldFilePath($request,$this->mainModel,$this->mPrivateKey,$this->mFieldPath));
             $response = $this->delete($request);
+            if($response->getStatus()){
+                $this->deleteOldFile($this->getOldFilePath($request,$this->mainModel,$this->mPrivateKey,$this->mFieldPath));
+            }
+
         }
         if($request->get(ActionKey::active)!=null){
             $response =  $this->active($request);
