@@ -27,10 +27,10 @@ class SongDetailController extends CDUAbstractController{
     private $fieldFile = array('avatar','subtitle_source','song_source');
     private $fieldPath = array('avatar_path','subtitle_source_path','song_source_path');
     private $foreignData ;
-    private $validateForm = ['name'=>'required|max:255','duration' => 'required|numeric','avatar' => 'required',
+    private $validateForm = ['name'=>'required|max:255','duration' => 'required','avatar' => 'required',
         'song_source' => 'required','subtitle_source' => 'required','category_id' => 'required','language_id' => 'required'
         ,'singer_id' => 'required','subtitle_type_id' => 'required','song_type_id' => 'required'];
-    private $validateFormUpdate = ['name'=>'required|max:255','duration' => 'required|numeric'];
+    private $validateFormUpdate = ['name'=>'required|max:255','duration' => 'required'];
     private $pagingNumber = 3;
     private $validateMaker;
     public function __construct(){
@@ -84,13 +84,28 @@ class SongDetailController extends CDUAbstractController{
             if($result->getStatus()){
                 $progressData= $progressData+['song_detail_id'=>$result->getData()];
                 $cduNewLeastSong = new CDUController(new NewLeastSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
-                if($cduNewLeastSong->fifoDatabase('new_least_song')){
-                    $this->validateMaker = $cduNewLeastSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+                if($cduNewLeastSong->fifoDatabaseByCategory('new_least_song',3,$progressData['category_id'])){
+                    $result = $cduNewLeastSong->progressPost($request,$progressData);
+                    if(!$result->getStatus()){
+                       var_dump('can not insert into newLeastSong');
+                       exit;
+                    }
+                    $this->validateMaker = $result->parseMessageToValidateMaker();
+                }else{
+                    var_dump('can not delete newLeastSong');
+                    exit;
                 }
                 if(!empty($request->get('is_hot_song')) ? true : false){
                     $cduHotSong = new CDUController(new HotSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
-                    if($cduHotSong->fifoDatabase('hot_song')){
-                        $this->validateMaker = $cduHotSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+                    if($cduHotSong->fifoDatabase('hot_song',3)){
+                        $result = $cduHotSong->progressPost($request,$progressData);
+                        if(!$result->getStatus()){
+                            var_dump('can not insert into hot song');
+                            exit;
+                        }else{
+                            $this->validateMaker = $cduHotSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+                        }
+
                     }
 
                 }

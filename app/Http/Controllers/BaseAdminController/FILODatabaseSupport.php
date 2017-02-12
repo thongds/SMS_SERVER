@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 trait FILODatabaseSupport{
 
-    public function fifoDatabase($table){
+    public function fifoDatabase($table,$maxRow){
         if(is_string($table)){
             $result = DB::table($table)->count();
-            if($result>2){
+            if($result>$maxRow-1){
                 $maxDate = DB::table($table)->min('created_at');
                 $id = DB::table($table)->where('created_at', '=',$maxDate)->value('id');
                 $delete = DB::table($table)->where('id','=',$id)->delete();
@@ -29,4 +29,18 @@ trait FILODatabaseSupport{
         return false;
     }
 
+    public function fifoDatabaseByCategory($tableName,$maxRow,$category_id)
+    {
+        if (is_string($tableName)) {
+            $result = DB::table($tableName)->where('category_id','=',$category_id)->count();
+            if($result>$maxRow-1){
+                $maxDate = DB::table($tableName)->min('created_at');
+                $id = DB::table($tableName)->where('created_at', '=',$maxDate,'AND','category_id','=',$category_id)->value('id');
+                $delete = DB::table($tableName)->where('id','=',$id)->delete();
+                return (bool)$delete;
+            }else{
+                return true;
+            }
+        }
+    }
 }
