@@ -13,6 +13,8 @@ return array(
     'AdminUser' => $baseDir . '/database/migrations/2017_01_14_056625_admin_user.php',
     'BuySongHistory' => $baseDir . '/database/migrations/2017_01_14_053839_buy_song_history.php',
     'Category' => $baseDir . '/database/migrations/2017_01_14_034712_category.php',
+    'CreateHotSongTable' => $baseDir . '/database/migrations/2017_02_12_051629_create_hot_song_table.php',
+    'CreateNewleastSongTable' => $baseDir . '/database/migrations/2017_02_12_050640_create_newleast_song_table.php',
     'CreateSongTypeTable' => $baseDir . '/database/migrations/2017_01_14_035915_create_song_type_table.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DefaultImage' => $baseDir . '/database/migrations/2017_01_26_090244_default_image.php',

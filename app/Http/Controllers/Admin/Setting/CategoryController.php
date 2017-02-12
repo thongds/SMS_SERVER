@@ -18,7 +18,7 @@ class CategoryController extends CDUController {
     private $uniqueFields = array('name');
     private $privateKey = 'id';
     private $validateForm = ['name'=>'required|max:255'];
-    private $pagingNumber = 3;
+    private $pagingNumber = 10;
     private $validateMaker;
     public function __construct(){
         $this->validateMaker = Validator(array(),array(),array());
@@ -40,8 +40,8 @@ class CategoryController extends CDUController {
     }
 
     public function returnView($data){
-        $categoryList = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        $view = view('admin/setting/category.categoryIndex',['router' => $this->mRouter,'category_list'=>$categoryList,
+        $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
+        $view = view('admin/setting/category.categoryIndex',['router' => $this->mRouter,'listData'=>$listData,
             'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),
             'update_data' =>$this->mUpdateData]);
 

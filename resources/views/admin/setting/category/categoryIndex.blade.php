@@ -22,10 +22,10 @@
                                 <th>Created</th>
                             </tr>
                             <?php
-                            if($category_list){
+                            if($listData){
                                 $labeClass = "label-success";
                                 $labeName = "Active";
-                                foreach ($category_list as $list){
+                                foreach ($listData as $list){
 
                                     $delete_url = url()->current().'?page='.$page.'&delete=true&id='.$list['id'];
                                     $edit_url = url()->current().'?page='.$page.'&isEdit=true&id='.$list['id'];;
@@ -64,7 +64,7 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
-                {{$category_list->links()}}
+                {{$listData->links()}}
             </div>
         </div>
 

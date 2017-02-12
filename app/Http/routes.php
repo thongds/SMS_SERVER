@@ -35,6 +35,11 @@ Route::group(['namespace' => 'Admin\CreateData'],function (){
     Route::get('admin/song-index','SongDetailController@index')->name('get_song');
     Route::post('admin/song-index','SongDetailController@index')->name('post_song');
 });
+/* api router*/
+Route::group(['namespace' => 'Api\v1'],function (){
+    Route::get('api/v1/home-page','HomePageController@index')->name('get_api_home_page');
+    //Route::post('admin/song-index','SongDetailController@index')->name('post_song');
+});
 /* news controller group */
 Route::group(['namespace' => 'Admin\Setting'],function (){
     //setting SubtitleType
@@ -67,57 +72,6 @@ Route::group(['namespace' => 'Admin\Setting'],function (){
 
 
 });
-/* news controller group */
-
-//Route::group(['namespace' => 'Admin'],function (){
-//
-//    /* admin route */
-//        //setting role
-//        Route::get('admin/createRole','SettingController@createRole')->name('get_createRole');
-//        Route::post('admin/createRole','SettingController@createRole')->name('createRole');
-//        //setting category
-//        Route::get('admin/category','CategoryController@index')->name('get_category');
-//        Route::post('admin/category','CategoryController@index')->name('post_category');
-//
-//        Route::get('admin','AdminController@index');
-//        Route::post('admin/login','AdminController@login')->name('admin');
-//        Route::get('admin/login','AdminController@login')->name('admin');
-//
-//        Route::get('admin/newssetting','AdminNewsController@index');
-//        Route::get('admin/listnews','AdminNewsController@listNewsmedia');
-//
-//        Route::get('admin/addnews','AdminNewsController@addNewspaper');
-//        Route::post('admin/addnews','AdminNewsController@addNewspaper')->name('addNewspaper');
-//
-//
-//        Route::get('admin/addnewcategory','AdminNewsController@addNewCategory');
-//        Route::post('admin/addnewcategory','AdminNewsController@addNewCategory')->name('addNewCategory');
-//
-//
-//        Route::get('admin/addnewsmedia','AdminNewsController@addNewsMedia');
-//        Route::post('admin/addnewsmedia','AdminNewsController@addNewsMedia')->name('addNewsMedia');
-//
-//        /* social media controller */
-//
-//
-//        Route::get('admin/socialmedia','AdminSocialMediaController@index')->name('list_social');
-//        Route::get('admin/listsocial','AdminController@listsocial');
-//        Route::get('admin/addsocial','AdminController@addsocial');
-//        Route::get('admin/socialsetting','AdminController@socialsetting');
-//
-//        Route::get('admin/addnewsocial','AdminController@addnewsocial');
-//        Route::post('admin/addnewsocial','AdminController@addnewsocial')->name('addnewsocial');
-//
-//
-//        Route::get('admin/addnewfanpage','AdminController@addnewfanpage');
-//        Route::post('admin/addnewfanpage','AdminController@addnewfanpage')->name('addnewfanpage');
-//
-//        Route::get('admin/addnewsocialmedia','AdminSocialMediaController@addNewSocialMedia');
-//        Route::post('admin/addnewsocialmedia','AdminSocialMediaController@addNewSocialMedia')->name('addNewSocialMedia');
-//
-//});
-
-
 
 Route::get('api/news/getnews/{page}','Api\v1\NewsController@getNews')->where('page','[0-9]+');
 

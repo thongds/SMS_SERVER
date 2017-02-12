@@ -276,6 +276,8 @@ class ComposerStaticInita58cdf2816d1853ea58abe1f2dac03d7
         'AdminUser' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_056625_admin_user.php',
         'BuySongHistory' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_053839_buy_song_history.php',
         'Category' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_034712_category.php',
+        'CreateHotSongTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_12_051629_create_hot_song_table.php',
+        'CreateNewleastSongTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_12_050640_create_newleast_song_table.php',
         'CreateSongTypeTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_035915_create_song_type_table.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DefaultImage' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_090244_default_image.php',

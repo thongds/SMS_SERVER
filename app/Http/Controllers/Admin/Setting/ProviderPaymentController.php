@@ -15,14 +15,15 @@ use Illuminate\Http\Request;
 
 class ProviderPaymentController extends CDUController
 {
-    private $routers = array('GET' => 'get_provider_payment','POST' => 'post_provider_payment');
+    private $mRouter = array('GET' => 'get_provider_payment','POST' => 'post_provider_payment');
     private $uniqueFields = array('name');
     private $privateKey = 'id';
     private $validateForm = ['name'=>'required|max:255'];
     private $pagingNumber = 3;
-    private $pageTitle = 'Subtitle Type';
+    private $validateMaker;
     public function __construct(){
-        parent::__construct(new ProviderPayment(),$this->privateKey,$this->uniqueFields,$this->routers,$this->validateForm);
+        $this->validateMaker = Validator(array(),array(),array());
+        parent::__construct(new ProviderPayment(),$this->privateKey,$this->uniqueFields,$this->validateForm,null,$this->validateForm);
     }
 
     public function index(Request $request){
@@ -31,33 +32,27 @@ class ProviderPaymentController extends CDUController
         if ($request->isMethod('POST')){
             $active = !empty($request->get('active')) ? 1 : 0 ;
             $progressData = ['active' => $active,'name' => $request->get('name')];
-            $this->processPost($request,$progressData,function ($status,$message){
-                if($message!=null){
-                    foreach ($message as $value){
-                        $this->mValidateMaker->errors()->add('field',$value);
-                    }
-                }
-                return $this->returnView();
-            });
+            $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
         }
         if ($request->isMethod('GET')){
-            $this->processGet($request,function ($data){
+            $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
+        }
+        return $this->returnView(null);
+    }
 
-            });
+    public function returnView($data){
+        $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
+        $view = view('admin/setting/providerPayment.provider_payment',['router' => $this->mRouter,'listData'=>$listData,
+            'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),
+            'update_data' =>$this->mUpdateData]);
+
+        if($this->validateMaker!=null && count($this->validateMaker->errors()->toArray())>0){
+            $message = $this->validateMaker->errors();
+            return $view->withErrors($message);
         }
 
-        return $this->returnView();
-    }
-    public function returnView($data = null)
-    {
-        $listData = $this->mainModel->orderBy('created_at')->paginate($this->pagingNumber);
-        if(count($this->mValidateMaker->errors()->toArray())>0)
-            return view('admin/setting/subtitletype.subtitleTypeIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
-                'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
-                ->withErrors($this->mValidateMaker);
-        return view('admin/setting/subtitletype.subtitleTypeIndex',['router' =>$this->routers,'pageTitle' => $this->pageTitle,
-            'listData'=>$listData,'page'=>$this->page,'isEdit'=>$this->request->get('isEdit'),'update_data' =>$this->mUpdateData])
-            ;
+        return $view;
+
     }
 
 }

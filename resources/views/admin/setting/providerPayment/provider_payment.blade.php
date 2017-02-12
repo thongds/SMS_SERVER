@@ -1,5 +1,5 @@
 @extends('../layouts.admin')
-@section('title','Category Index')
+@section('title','Provider Payment Index')
 @section('content')
     <div class="row">
         <!-- left column -->
@@ -7,7 +7,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Category List</h3>
+                        <h3 class="box-title">Provider Payment List</h3>
 
 
                     </div>
@@ -77,7 +77,7 @@
                 <?php echo Form::open(array('route'=>$router['POST'],'method'=>'post','enctype'=>'multipart/form-data')) ?>
                 {{--<form role="form">--}}
                 <div class="box-header with-border">
-                    <h3 class="box-title">New Category</h3>
+                    <h3 class="box-title">New Provider Payment</h3>
                     @if (count($errors) > 0)
                         <div class="alert alert-success">
                             <ul>
@@ -95,9 +95,9 @@
                 <div class="box-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Category Name</label>
+                        <label for="exampleInputEmail1">Provider Payment Name</label>
                         @if(!$isEdit)
-                            <input type="input" name ="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name Category">
+                            <input type="input" name ="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name provider payment">
                         @else
                             <input type="input" name ="name" value = "<?php echo $update_data["name"]; ?>" class="form-control" id="exampleInputEmail1" >
                         @endif

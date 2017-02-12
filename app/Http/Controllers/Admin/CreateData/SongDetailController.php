@@ -78,6 +78,7 @@ class SongDetailController extends CDUController{
             ];
             $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
             $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
+
         }
         if ($request->isMethod('GET')){
             $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
