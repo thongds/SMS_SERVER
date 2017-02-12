@@ -7,12 +7,13 @@
  */
 
 namespace App\Http\Controllers\Admin\Setting;
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Http\Controllers\BaseAdminController\CDUFileController;
 use App\Models\Singer;
 use Illuminate\Http\Request;
 
-class SingerController extends CDUController{
+class SingerController extends CDUAbstractController{
 
     private $mRouter = ['GET' => 'get_singer','POST' => 'post_singer'];
     private $uniqueFields = array('name');

@@ -8,13 +8,14 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Http\Controllers\BaseAdminController\CDUFileController;
 use App\Models\DefaultImage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 
-class DefaultImageController extends CDUController{
+class DefaultImageController extends CDUAbstractController{
     private $routers = array('GET' => 'get_default_image','POST' => 'post_default_image');
     private $uniqueFields = array('name');
     private $fieldFile = array('avatar','logo','content');

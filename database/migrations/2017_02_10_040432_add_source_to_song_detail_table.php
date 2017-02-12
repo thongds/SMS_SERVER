@@ -12,10 +12,7 @@ class AddSourceToSongDetailTable extends Migration
      */
     public function up()
     {
-        Schema::table('song_detail', function (Blueprint $table) {
-            $table->string('song_source');
-            $table->string('song_source_path');
-        });
+
     }
 
     /**
@@ -25,9 +22,6 @@ class AddSourceToSongDetailTable extends Migration
      */
     public function down()
     {
-        Schema::table('song_detail', function (Blueprint $table) {
-            $table->dropColumn('song_source');
-            $table->dropColumn('song_source_path');
-        });
+
     }
 }

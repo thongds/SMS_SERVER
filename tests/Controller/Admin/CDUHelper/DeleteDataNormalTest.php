@@ -26,9 +26,9 @@ class DeleteDataNormalTest extends TestCase{
         $this->assertFalse($result->getStatus());
     }
     public function testDeleteByRealId(){
-        $data = $this->mDeleteObject->mModel->get()->first()->toArray();
-        $this->realId = $data['id'];
-        $result = $this->mDeleteObject->deleteById($this->realId);
-        $this->assertTrue($result->getStatus());
+//        $data = $this->mDeleteObject->mModel->get()->first()->toArray();
+//        $this->realId = $data['id'];
+//        $result = $this->mDeleteObject->deleteById($this->realId);
+//        $this->assertTrue($result->getStatus());
     }
 }

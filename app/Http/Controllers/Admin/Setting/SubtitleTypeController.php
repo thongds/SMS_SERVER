@@ -9,11 +9,12 @@
 namespace App\Http\Controllers\Admin\Setting;
 
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Models\SubtitleType;
 use Illuminate\Http\Request;
 
-class SubtitleTypeController extends  CDUController
+class SubtitleTypeController extends  CDUAbstractController
 {
     private $mRouter = array('GET' => 'get_subtitle_type','POST' => 'post_subtitle_type');
     private $validateMaker;

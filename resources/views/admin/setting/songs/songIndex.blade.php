@@ -141,7 +141,12 @@
                         </select>
                         @endforeach
                     @endif
-
+                    <br>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="is_hot_song" > Is Hot Song ?<br><br>
+                        </label>
+                    </div>
                     <div class="checkbox">
                         <label>
                             @if($update_data!=null & $update_data['active'] != 1)

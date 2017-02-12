@@ -9,12 +9,13 @@
 namespace App\Http\Controllers\Admin\Setting;
 
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Models\AdminRole;
 
 use Illuminate\Http\Request;
 
-class RoleController extends CDUController{
+class RoleController extends CDUAbstractController{
 
     private $mRouter = ['GET' => 'get_role','POST' => 'post_role'];
     private $validateMaker;

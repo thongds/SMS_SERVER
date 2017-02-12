@@ -8,11 +8,12 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use Illuminate\Http\Request;
 use App\Models\SongType;
 
-class SongTypeController extends CDUController{
+class SongTypeController extends CDUAbstractController{
 
     private $mRouter = ['GET' => 'get_song_type','POST' => 'post_song_type'];
     private $validateMaker;

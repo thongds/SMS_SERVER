@@ -7,12 +7,13 @@
  */
 namespace App\Http\Controllers\Admin\Setting;
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Validator;
 
-class CategoryController extends CDUController {
+class CategoryController extends CDUAbstractController {
 
     private $mRouter = ['GET' => 'get_category', 'POST' => 'post_category'];
     private $uniqueFields = array('name');

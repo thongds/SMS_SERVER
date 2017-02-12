@@ -9,11 +9,12 @@
 namespace App\Http\Controllers\Admin\Setting;
 
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Models\SubscribeTypeModel;
 use Illuminate\Http\Request;
 
-class SubscribeTypeController extends CDUController{
+class SubscribeTypeController extends CDUAbstractController{
 
     private $mRouter = ['GET' => 'get_subscribe_type', 'POST' => 'post_subscribe_type'];
     private $uniqueFields = array('name');

@@ -9,12 +9,13 @@
 namespace App\Http\Controllers\Admin\Setting;
 
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use Illuminate\Http\Request;
 use App\Models\Language;
 use Validator;
 
-class LanguageController extends CDUController{
+class LanguageController extends CDUAbstractController{
     private $mRouter = ['GET' => 'get_language','POST' => 'post_language'];
     private $validateMaker;
     private $uniqueFields = array('name');

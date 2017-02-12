@@ -14,7 +14,6 @@ use App\Http\Controllers\Helper\Validate;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Helper\ActionKey;
-use App\Http\Controllers\Helper\MessageKey;
 use App\Http\Controllers\BaseAdminController\Controller;
 use App\Http\Controllers\Admin\CDUHelper\CreateNewNormal;
 use App\Http\Controllers\Admin\CDUHelper\DeleteDataNormal;
@@ -23,7 +22,7 @@ use Validator;
 
 
 
-abstract class CDUController extends Controller {
+class CDUController extends Controller {
 
     protected $mainModel ;
     protected $mUniqueFields;
@@ -39,7 +38,7 @@ abstract class CDUController extends Controller {
     protected $mValidateFormUpdate;
     protected $mForeignData;
     use FileSupport;
-
+    use FILODatabaseSupport;
     public function __construct(Model $model,$privateKey,Array $uniqueField,Array $validateForm,$fieldFile = null,
                                 $validateFormUpdate = array(),$fieldPath = array(),$foreignData = array()){
        $this->mainModel = $model;
@@ -52,7 +51,6 @@ abstract class CDUController extends Controller {
        $this->mFieldPath = $fieldPath;
        $this->mForeignData = $foreignData;
     }
-    abstract function returnView($data);
 
     public function progressPost(Request $request,Array $progressData){
         if($request->get($this->mPrivateKey)==null){

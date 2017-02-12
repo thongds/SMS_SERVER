@@ -9,11 +9,12 @@
 namespace App\Http\Controllers\Admin\Setting;
 
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Models\ProviderPayment;
 use Illuminate\Http\Request;
 
-class ProviderPaymentController extends CDUController
+class ProviderPaymentController extends CDUAbstractController
 {
     private $mRouter = array('GET' => 'get_provider_payment','POST' => 'post_provider_payment');
     private $uniqueFields = array('name');

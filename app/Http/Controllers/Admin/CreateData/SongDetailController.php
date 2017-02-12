@@ -8,16 +8,19 @@
  */
 namespace App\Http\Controllers\Admin\CreateData;
 
+use App\Http\Controllers\BaseAdminController\CDUAbstractController;
 use App\Http\Controllers\BaseAdminController\CDUController;
 use App\Models\Category;
+use App\Models\HotSong;
 use App\Models\Language;
+use App\Models\NewLeastSong;
 use App\Models\Singer;
 use App\Models\SongDetail;
 use App\Models\SongType;
 use App\Models\SubtitleType;
 use Illuminate\Http\Request;
 
-class SongDetailController extends CDUController{
+class SongDetailController extends CDUAbstractController{
     private $mRouter = array('GET' => 'get_song','POST' => 'post_song');
     private $uniqueFields = array('name');
     private $privateKey = 'id';
@@ -78,7 +81,17 @@ class SongDetailController extends CDUController{
             ];
             $progressData = array_merge($progressData, $this->progressFileData($request,$this->fieldFile,$progressData));
             $this->validateMaker = $this->progressPost($request,$progressData)->parseMessageToValidateMaker();
+            $cduNewLeastSong = new CDUController(new NewLeastSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
+            if($cduNewLeastSong->fifoDatabase('new_least_song')){
+                $this->validateMaker = $cduNewLeastSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+            }
+            if(!empty($request->get('is_hot_song')) ? true : false){
+                $cduHotSong = new CDUController(new HotSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
+                if($cduHotSong->fifoDatabase('hot_song')){
+                    $this->validateMaker = $cduHotSong->progressPost($request,$progressData)->parseMessageToValidateMaker();
+                }
 
+            }
         }
         if ($request->isMethod('GET')){
             $this->validateMaker = $this->progressGet($request)->parseMessageToValidateMaker();
