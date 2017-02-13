@@ -32,6 +32,8 @@ class SongDetailController extends CDUAbstractController{
         ,'singer_id' => 'required','subtitle_type_id' => 'required','song_type_id' => 'required'];
     private $validateFormUpdate = ['name'=>'required|max:255','duration' => 'required'];
     private $pagingNumber = 3;
+    private  $mLimitHostSong = 10;
+    private $mLimitNewSongByCategory = 3;
     private $validateMaker;
     public function __construct(){
         $this->validateMaker = Validator(array(),array(),array());
@@ -84,7 +86,7 @@ class SongDetailController extends CDUAbstractController{
             if($result->getStatus()){
                 $progressData= $progressData+['song_detail_id'=>$result->getData()];
                 $cduNewLeastSong = new CDUController(new NewLeastSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
-                if($cduNewLeastSong->fifoDatabaseByCategory('new_least_song',3,$progressData['category_id'])){
+                if($cduNewLeastSong->fifoDatabaseByCategory('new_least_song',$this->mLimitNewSongByCategory,$progressData['category_id'])){
                     $result = $cduNewLeastSong->progressPost($request,$progressData);
                     if(!$result->getStatus()){
                        var_dump('can not insert into newLeastSong');
@@ -97,7 +99,7 @@ class SongDetailController extends CDUAbstractController{
                 }
                 if(!empty($request->get('is_hot_song')) ? true : false){
                     $cduHotSong = new CDUController(new HotSong(),$this->privateKey,$this->uniqueFields,$this->validateForm,$this->fieldFile,$this->validateFormUpdate,$this->fieldPath);
-                    if($cduHotSong->fifoDatabase('hot_song',3)){
+                    if($cduHotSong->fifoDatabase('hot_song',$this->mLimitHostSong)){
                         $result = $cduHotSong->progressPost($request,$progressData);
                         if(!$result->getStatus()){
                             var_dump('can not insert into hot song');

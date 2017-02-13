@@ -8,24 +8,41 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-
-use App\Http\Controllers\BaseAdminController\CDUAbstractController;
+use App\Http\Controllers\BaseAdminController\Controller;
 use Illuminate\Support\Facades\DB;
 
-class HomePageController extends CDUAbstractController
+class HomePageController extends Controller
 {
     public function __construct()
     {
     }
 
-    public function index(){
+    public function hostSong(){
         $data = DB::table('hot_song')->where('active','1')->get();
         echo json_encode($data);
     }
 
-    public function returnView($data)
-    {
-        // TODO: Implement returnView() method.
+    public function mainPageByCategory(){
+        $categoryArray = array();
+        $categoryData = DB::table('category')->where('active',1)->get();
+        $newSongData = DB::table('new_least_song')->where('active',1)->get();
+
+        foreach ($categoryData as $key =>$value){
+            $categoryArray[$value['name']] =$value['id'];
+        }
+        $result = $categoryArray;
+        foreach ($newSongData as $key => $value){
+            foreach ($categoryArray as $key1 => $value1){
+                if($value1 == $value['category_id']){
+                    if(is_int($result[$key1])){
+                        $result[$key1] = array($value);
+                    }else{
+                        array_push($result[$key1],$value);
+                    }
+                }
+            }
+        }
+        echo json_encode($result);
     }
 
 }

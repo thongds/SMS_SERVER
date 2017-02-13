@@ -37,7 +37,8 @@ Route::group(['namespace' => 'Admin\CreateData'],function (){
 });
 /* api router*/
 Route::group(['namespace' => 'Api\v1'],function (){
-    Route::get('api/v1/home-page','HomePageController@index')->name('get_api_home_page');
+    Route::get('api/v1/home-page-host-song','HomePageController@hostSong')->name('get_api_home_page');
+    Route::get('api/v1/home-page-new-song','HomePageController@mainPageByCategory')->name('get_api_home_page_new_song');
     //Route::post('admin/song-index','SongDetailController@index')->name('post_song');
 });
 /* news controller group */
