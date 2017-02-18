@@ -31,7 +31,7 @@ class SongDetailController extends CDUAbstractController{
         'song_source' => 'required','subtitle_source' => 'required','category_id' => 'required','language_id' => 'required'
         ,'singer_id' => 'required','subtitle_type_id' => 'required','song_type_id' => 'required'];
     private $validateFormUpdate = ['name'=>'required|max:255','duration' => 'required'];
-    private $pagingNumber = 3;
+    private $pagingNumber = 10;
     private  $mLimitHostSong = 10;
     private $mLimitNewSongByCategory = 3;
     private $validateMaker;

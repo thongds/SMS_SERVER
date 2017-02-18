@@ -29,10 +29,16 @@ class HomePageController extends Controller
         }
         echo json_encode($languageArray);
     }
+    public function getEvent(){
+        $eventData = DB::table('event')->where('active',1)->get();
+        echo json_encode($eventData);
+    }
     public function mainPageByCategory(){
         $categoryArray = array();
+        $responseData = array();
         $categoryData = DB::table('category')->where('active',1)->get();
         $newSongData = DB::table('new_least_song')->where('active',1)->get();
+        $hostSongData = DB::table('hot_song')->where('active','1')->get();
 
         foreach ($categoryData as $key =>$value){
             $categoryArray[$value['name']] =$value['id'];
@@ -50,7 +56,9 @@ class HomePageController extends Controller
                 }
             }
         }
-        echo json_encode($result);
+        $responseData['host_song'] = $hostSongData;
+        $responseData['category_song'] = $result;
+        echo json_encode($responseData);
     }
 
 }

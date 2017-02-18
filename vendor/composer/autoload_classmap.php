@@ -7,12 +7,14 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AddAvatarPathToSingerTable' => $baseDir . '/database/migrations/2017_01_26_051551_add_avatar_path_to_singer_table.php',
+    'AddIsBannerColumn' => $baseDir . '/database/migrations/2017_02_18_073027_add_is_banner_column.php',
     'AddSourceToSongDetailTable' => $baseDir . '/database/migrations/2017_02_10_040432_add_source_to_song_detail_table.php',
     'AddTokenToUserTable' => $baseDir . '/database/migrations/2017_01_20_023549_add_token_to_user_table.php',
     'AdminRole' => $baseDir . '/database/migrations/2017_01_14_055208_admin_role.php',
     'AdminUser' => $baseDir . '/database/migrations/2017_01_14_056625_admin_user.php',
     'BuySongHistory' => $baseDir . '/database/migrations/2017_01_14_053839_buy_song_history.php',
     'Category' => $baseDir . '/database/migrations/2017_01_14_034712_category.php',
+    'CreateEventTable' => $baseDir . '/database/migrations/2017_02_18_032122_create_event_table.php',
     'CreateHotSongTable' => $baseDir . '/database/migrations/2017_02_12_051629_create_hot_song_table.php',
     'CreateNewleastSongTable' => $baseDir . '/database/migrations/2017_02_12_050640_create_newleast_song_table.php',
     'CreateSongTypeTable' => $baseDir . '/database/migrations/2017_01_14_035915_create_song_type_table.php',

@@ -139,6 +139,9 @@ class CDUController extends Controller {
     protected function getDataByModel(Model $model){
         return $model->where('active',1)->get()->toArray();
     }
+    public function setValidate(Array $validate){
+        $this->mValidateForm = $validate;
+    }
 
 
 }

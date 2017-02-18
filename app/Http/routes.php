@@ -40,6 +40,7 @@ Route::group(['namespace' => 'Api\v1'],function (){
     Route::get('api/v1/home-page-host-song','HomePageController@hostSong')->name('get_api_home_page');
     Route::get('api/v1/home-page-new-song','HomePageController@mainPageByCategory')->name('get_api_home_page_new_song');
     Route::get('api/v1/home-page-menu','HomePageController@menuSong')->name('get_api_home_page_menu');
+    Route::get('api/v1/home-page-event','HomePageController@getEvent')->name('get_api_home_page_event');
 
 });
 /* news controller group */
@@ -71,6 +72,9 @@ Route::group(['namespace' => 'Admin\Setting'],function (){
     //setting default image
     Route::get('admin/default-image','DefaultImageController@index')->name('get_default_image');
     Route::post('admin/default-image','DefaultImageController@index')->name('post_default_image');
+    //setting default image
+    Route::get('admin/event','EventController@index')->name('get_event');
+    Route::post('admin/event','EventController@index')->name('post_event');
 
 
 });

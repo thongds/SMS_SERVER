@@ -352,6 +352,17 @@
                         <li><a href="{{URL("admin/song-index")}}"><i class="fa fa-circle-o"></i>Song Data </a></li>
                     </ul>
                 </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>Event Controll</span>
+                        <span class="pull-right-container">
+                             <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{URL("admin/event")}}"><i class="fa fa-circle-o"></i>Event Controll</a></li>
+                    </ul>
+                </li>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-files-o"></i>
