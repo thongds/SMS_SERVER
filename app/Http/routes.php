@@ -41,6 +41,9 @@ Route::group(['namespace' => 'Api\v1'],function (){
     Route::get('api/v1/home-page-new-song','HomePageController@mainPageByCategory')->name('get_api_home_page_new_song');
     Route::get('api/v1/home-page-menu','HomePageController@menuSong')->name('get_api_home_page_menu');
     Route::get('api/v1/home-page-event','HomePageController@getEvent')->name('get_api_home_page_event');
+    //for testing
+    Route::get('api/v1/timeout','HomePageController@timeOut')->name('get_api_time_out');
+    Route::get('api/v1/response-not-json','HomePageController@ResponseNotJson')->name('get_api_response_not_json');
 
 });
 /* news controller group */
